@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Anchor</title>
     
-    <link rel="apple-touch-icon" href="https://placehold.co/180x180/FF9AA2/ffffff.png?text=%E2%9A%93%EF%B8%8F&font=roboto">
-    <link rel="icon" href="https://placehold.co/180x180/FF9AA2/ffffff.png?text=%E2%9A%93%EF%B8%8F&font=roboto">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjRkZDOEQxIi8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5ZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjIyIiByPSI3Ii8+PGxpbmUgeDE9IjMzIiB5MT0iMzUiIHgyPSI2NyIgeTI9IjM1Ii8+PGxpbmUgeDE9IjUwIiB5MT0iMjkiIHgyPSI1MCIgeTI9Ijg3Ii8+PHBhdGggZD0iTTIwIDUyIFEgMjAgODIgNTAgODIgU2EgODAgODIgODAgNTIiLz48cGF0aCBkPSJNMjAgNTIgTCAxMyA2MCIvPjxwYXRoIGQ9Ik0yMCA1MiBMIDI5IDU4Ii8+PHBhdGggZD0iTTgwIDUyIEwgNzEgNTgiLz48cGF0aCBkPSJNODAgNTIgTCA4NyA2MCIvPjxwYXRoIGQ9Ik00NCA4MSBMIDUwIDg3IEwgNTYgODEiLz48L2c+PC9zdmc+">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjRkZDOEQxIi8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5ZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjIyIiByPSI3Ii8+PGxpbmUgeDE9IjMzIiB5MT0iMzUiIHgyPSI2NyIgeTI9IjM1Ii8+PGxpbmUgeDE9IjUwIiB5MT0iMjkiIHgyPSI1MCIgeTI9Ijg3Ii8+PHBhdGggZD0iTTIwIDUyIFEgMjAgODIgNTAgODIgU2EgODAgODIgODAgNTIiLz48cGF0aCBkPSJNMjAgNTIgTCAxMyA2MCIvPjxwYXRoIGQ9Ik0yMCA1MiBMIDI5IDU4Ii8+PHBhdGggZD0iTTgwIDUyIEwgNzEgNTgiLz48cGF0aCBkPSJNODAgNTIgTCA4NyA2MCIvPjxwYXRoIGQ9Ik00NCA4MSBMIDUwIDg3IEwgNTYgODEiLz48L2c+PC9zdmc+">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <style>
-        /* --- 🎨 Anchor v4.0 样式表 --- */
+        /* --- 🎨 Anchor v4.1 最终版 --- */
         :root {
             --bg-blue: #D4F1F4;
             --bg-wood: #FDF6E3;
@@ -52,7 +52,7 @@
             padding-top: max(15px, env(safe-area-inset-top));
         }
         .app-title { font-weight: bold; font-size: 1.1rem; color: #444; }
-        .version-badge { background: #607D8B; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 5px; }
+        .version-badge { background: #FFC8D1; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 5px; }
         .btn-icon { cursor: pointer; font-size: 1.2rem; opacity: 0.6; }
 
         /* Stats Bar */
@@ -150,14 +150,6 @@
             background: rgba(255,255,255,0.5); padding: 4px 8px; border-radius: 10px;
         }
         .cycle-switch.active { background: var(--cycle-purple); color: #fff; font-weight: bold; }
-        .switch-btn {
-            font-size: 0.75rem; color: #666; display: flex; align-items: center; gap: 5px; cursor: pointer;
-            background: rgba(255,255,255,0.5); padding: 4px 8px; border-radius: 10px; border: 1px solid transparent;
-            transition: all 0.2s;
-        }
-        .switch-btn.active-cycle { background: var(--cycle-purple); color: #fff; font-weight: bold; border-color: var(--cycle-purple); }
-        .switch-btn.active-flash { background: var(--flash-yellow); color: #555; font-weight: bold; border-color: #FBC02D; }
-        .switch-container { display: flex; gap: 8px; }
 
         .time-select-small {
             font-size: 16px; padding: 4px; border-radius: 8px; border: 1px solid #ddd; color: #666;
@@ -207,13 +199,19 @@
         textarea { width: 100%; height: 80px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; color:#555; padding: 8px; font-family: monospace; }
         .btn-danger { width: 100%; padding: 10px; background: #ffebee; border: 1px solid #ffcdd2; color: #c62828; border-radius: 8px; cursor: pointer; margin-top: 20px; font-size: 0.8rem; }
 
+        /* Toast */
+        .toast-notification { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 24px; border-radius: 30px; font-size: 0.9rem; z-index: 2000; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .toast-notification.show { top: 20px; }
+
     </style>
 </head>
 <body>
 
+<div id="toast" class="toast-notification">✅ 操作成功</div>
+
 <div class="container">
     <div class="header">
-        <div><span class="app-title">Anchor ⚓️</span><span class="version-badge">v4.0</span></div>
+        <div><span class="app-title">Anchor ⚓️</span><span class="version-badge">v4.1</span></div>
         <span class="btn-icon" onclick="scrollToSettings()">⚙️</span>
     </div>
 
@@ -356,7 +354,6 @@
         { title: "吃一颗水果", icon: "🍊", desc: "慢慢吃，感受香气。" }
     ];
 
-    // --- 🔐 统一稳定存储键名 ---
     const KEY_DB = 'anchor_v4_db';
     const KEY_ARCHIVE = 'anchor_v4_archive';
     const KEY_LOG = 'anchor_v4_log';
@@ -379,7 +376,7 @@
     let switchState = { cycle: false, flash: false };
 
     function init() {
-        if(db.length === 0 && archive.length === 0) db = defaultDB;
+        if(db.length === 0 && archive.length === 0) db = defaultDB; 
         checkLogExpiry();
         renderList();
         renderArchive();
@@ -387,7 +384,7 @@
         updateStatsUI(); 
         setMode('normal');
         if (!localStorage.getItem(KEY_VISITED)) {
-            alert("👋 欢迎来到 Anchor v4.0！\n\n这是一个帮你找回生活秩序的工具。\n请查看页面底部的【用户手册】了解更多。");
+            alert("👋 欢迎来到 Anchor v4.1！\n\n请查看页面底部的【用户手册】。\n祝你使用愉快！⚓️");
             localStorage.setItem(KEY_VISITED, 'true');
         }
     }
@@ -433,6 +430,13 @@
     function updateStatsUI() {
         document.getElementById('stat-willpower').innerText = userStats.willpower;
         document.getElementById('stat-joy').innerText = userStats.joy;
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2000);
     }
 
     function getSmartIcon(item) {
@@ -626,7 +630,7 @@
     function finishTask() {
         if (!currentTask) return;
         if (currentTask.type === 'sos') {
-             alert("状态重启成功！🌱");
+             showToast("状态重启！🌱");
              document.getElementById('resultCard').style.display = 'none';
              return;
         }
@@ -839,7 +843,7 @@
         if(switchState.cycle) toggleSwitch('cycle', false);
         if(switchState.flash) toggleSwitch('flash', false);
         
-        alert(`🎉 存入 ${addedCount} 个任务！`);
+        showToast(`🎉 存入 ${addedCount} 个任务！`);
         setTimeout(() => input.placeholder = "输入事项... (*开头标记重要/青蛙)", 1500);
     }
 
@@ -847,6 +851,7 @@
         if(confirm("确定删除吗？")) {
             db = db.filter(item => item.id !== id);
             save(); renderList();
+            showToast("🗑️ 已删除");
         }
     }
 
@@ -854,100 +859,11 @@
         if(confirm("⚠️ 确定清空所有数据？不可恢复！")) {
             db = []; archive = []; dailyLog = []; userStats = { willpower: 0, joy: 0 };
             save(); renderList(); renderArchive(); renderLog(); updateStatsUI();
-            alert("已格式化");
+            showToast("已格式化");
         }
     }
 
-    function renderList() {
-        const dailyList = document.getElementById('dailyList');
-        const mediaList = document.getElementById('mediaList');
-        dailyList.innerHTML = ""; mediaList.innerHTML = "";
-        let dCount = 0, mCount = 0;
-        const todayStr = new Date().toDateString();
-        const sortedDB = [...db].sort((a,b) => b.id - a.id);
-
-        sortedDB.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'task-item';
-            const isDoneToday = (item.recurrence === 'daily' && item.lastDone === todayStr);
-            if (isDoneToday) li.classList.add('task-status-done');
-
-            const seriesBadge = item.isSeries ? `<span class="list-badge">∞系列</span>` : '';
-            const cycleBadge = item.recurrence === 'daily' ? 
-                (isDoneToday ? `<span class="list-badge">今天✅</span>` : `<span class="list-badge">🔄</span>`) : '';
-            
-            let extraBadges = "";
-            if(item.isFrog) extraBadges += `<span class="list-badge lb-frog">🐸</span>`;
-            if(item.isQuick) extraBadges += `<span class="list-badge lb-flash">⚡️</span>`;
-
-            let tDisplay = "";
-            if (item.time === 0) tDisplay = `<span style="font-size:0.7rem;color:#ccc;margin-left:5px;">任意</span>`;
-            else if (item.time) tDisplay = `<span style="font-size:0.7rem;color:#ccc;margin-left:5px;">${item.time}m</span>`;
-
-            li.innerHTML = `
-                <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:20px;text-align:center;">${getSmartIcon(item)}</span>
-                    <span style="font-size:0.9rem;color:#555;">${item.title}</span>
-                    ${seriesBadge}${cycleBadge}${extraBadges}${tDisplay}
-                </div>
-                <div class="task-del" onclick="tryDeleteItem(${item.id})">🗑️</div>
-            `;
-
-            if (item.type === 'culture' || item.type === 'vinyl') { mediaList.appendChild(li); mCount++; } 
-            else { dailyList.appendChild(li); dCount++; }
-        });
-        document.getElementById('dailyCount').innerText = dCount;
-        document.getElementById('mediaCount').innerText = mCount;
-    }
-
-    function renderArchive() {
-        const list = document.getElementById('archiveList');
-        list.innerHTML = "";
-        document.getElementById('arcCount').innerText = archive.length;
-        archive.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'archive-item';
-            div.innerHTML = `<span class="archive-date">[${item.finishDate}]</span><span>${item.title}</span>`;
-            list.appendChild(div);
-        });
-    }
-
-    function renderLog() {
-        const list = document.getElementById('logList');
-        list.innerHTML = "";
-        document.getElementById('logCount').innerText = dailyLog.length;
-        dailyLog.forEach(log => {
-            const li = document.createElement('li');
-            li.className = 'task-item';
-            li.innerHTML = `
-                <div style="display:flex;align-items:center;">
-                    <span class="footprint-time">${log.timeStr}</span>
-                    <span class="footprint-item">${log.icon} ${log.title}</span>
-                </div>
-            `;
-            list.appendChild(li);
-        });
-    }
-
-    function toggleList(id) {
-        const el = document.getElementById(id);
-        if(el.classList.contains('open')) el.classList.remove('open');
-        else el.classList.add('open');
-    }
-    
-    function getIcon(t) {
-        const map = { 'indoor':'🏠', 'desktop':'💻', 'outdoor':'🌳', 'sport':'🏃', 'culture':'🎬', 'vinyl':'🎵', 'sos':'🚑' };
-        return map[t] || '✨';
-    }
-    function save() {
-        localStorage.setItem(KEY_DB, JSON.stringify(db));
-        localStorage.setItem(KEY_ARCHIVE, JSON.stringify(archive));
-        localStorage.setItem(KEY_LOG, JSON.stringify(dailyLog));
-        localStorage.setItem(KEY_STATS, JSON.stringify(userStats));
-    }
-    function scrollToSettings() { document.getElementById('settingSec').scrollIntoView({behavior:"smooth"}); }
-
-    // --- 📡 核心修复：导入逻辑 ---
+    // 🔥 v3.7 Robust Import Logic
     function executeImport() {
         const str = document.getElementById('dataArea').value;
         if (!str || str.trim().length === 0) {
@@ -963,7 +879,7 @@
 
             if (!Array.isArray(incomingDB)) throw new Error("数据格式错误");
 
-            // 使用原生 confirm
+            // 使用原生 confirm (iOS兼容性最好)
             if(confirm(`📡 找到 ${incomingDB.length} 个任务。\n\n点击【确定】= 合并数据\n点击【取消】= 放弃`)) {
                  let addCount = 0;
                  incomingDB.forEach(newItem => {
