@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>保存图标</title>
+    <style>
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            background: #f0f0f0; 
+            flex-direction: column;
+        }
+        .tips { margin-top: 20px; color: #666; font-family: sans-serif; }
+    </style>
+</head>
+<body>
+
+    <img id="icon" width="300" height="300" alt="长按保存">
+
+    <div class="tips">👆 长按上面的图标 -> 存储到照片</div>
+
+    <script>
+        // 这里是你最喜欢的那个版本的 SVG 数据
+        const svgData = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='512' height='512'>
+            <rect width='100' height='100' fill='#FF9AA2'/>
+            <g fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'>
+                <circle cx='50' cy='22' r='7'/>
+                <line x1='33' y1='35' x2='67' y2='35'/>
+                <line x1='50' y1='29' x2='50' y2='87'/>
+                <path d='M20 52 Q 20 82 50 82 Q 80 82 80 52'/>
+                <path d='M20 52 L 13 60'/>
+                <path d='M20 52 L 29 58'/>
+                <path d='M80 52 L 71 58'/>
+                <path d='M80 52 L 87 60'/>
+                <path d='M44 81 L 50 87 L 56 81'/>
+            </g>
+        </svg>`;
+
+        // 把 SVG 转换成浏览器能识别的图片格式
+        const img = document.getElementById('icon');
+        img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+    </script>
+</body>
+</html>
