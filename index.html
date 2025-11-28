@@ -28,7 +28,7 @@
             --flash-yellow: #FFD54F;
             --danger-red: #ff6b6b;
             --footprint-grey: #90A4AE;
-            --panel-soft: #F7F8FC; /* 四块列表卡片的浅灰背景 */
+            --panel-soft: #F3F7FF; /* 四块列表区域的浅灰蓝底色 */
         }
 
         * {
@@ -168,7 +168,7 @@
 
         /* 四大块列表区域：两列排版 */
         .section-list {
-            background-color: #fff;
+            background-color: var(--panel-soft);
             padding: 16px;
         }
 
@@ -180,7 +180,7 @@
         }
 
         .list-panel {
-            background: var(--panel-soft); /* ✅ 改为浅灰色卡片 */
+            background: #fff; /* 四块卡片本身保持白色 */
             border-radius: 16px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.04);
             padding: 10px 10px 6px;
