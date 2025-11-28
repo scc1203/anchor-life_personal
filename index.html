@@ -5,60 +5,475 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Anchor</title>
     
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjRkZDOEQxIi8+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01MCAyMGMtMyAwLTYgMy02IDYgMCAzIDMgNiA2IDYgMyAwIDYtMyA2LTYgMC0zLTMtNi02LTZ6bS0yIDEzdjQ3Yy0xNS0yLTI2LTE0LTI4LTI5aC01YzIgMTcgMTYgMzEgMzMgMzFzMzEtMTQgMzMtMzFoLTVjLTIgMTUtMTMgMjctMjggMjlWMzNoLTh2NGg4djFoLTh2LTVoOHoiLz48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTQ0IDgxbDYgNiA2LTZoLTEyeiIvPjwvc3ZnPg==">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjRkZDOEQxIi8+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01MCAyMGMtMyAwLTYgMy02IDYgMCAzIDMgNiA2IDYgMyAwIDYtMyA2LTYgMC0zLTMtNi02LTZ6bS0yIDEzdjQ3Yy0xNS0yLTI2LTE0LTI4LTI5aC01YzIgMTcgMTYgMzEgMzMgMzFzMzEtMTQgMzMtMzFoLTVjLTIgMTUtMTMgMjctMjggMjlWMzNoLTh2NGg4djFoLTh2LTVoOHoiLz48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTQ0IDgxbDYgNiA2LTZoLTEyeiIvPjwvc3ZnPg==">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-
     <style>
         /* --- 🎨 Anchor v4.6 样式 --- */
         :root {
-            --bg-blue: #D4F1F4;
-            --bg-wood: #FDF6E3;
-            --bg-pink: #FFE2E2;
-            --bg-sos:  #E8DFF5;
-            --bg-setting: #F0F4F8;
-            --text-main: #5D5C61;
-            --gold: #D4AF37;
-            --sport-green: #B5EAD7;
-            --cycle-purple: #C7CEEA;
-            --frog-green: #9CCC65;
-            --flash-yellow: #FFD54F;
-            --danger-red: #ff6b6b;
-            --footprint-grey: #90A4AE;
+            --bg-blue: #f0f4ff;
+            --bg-pink: #ffeef3;
+            --bg-card: #ffffff;
+            --border-soft: #e6ecff;
+            --accent: #ff9aa2;
+            --accent-soft: #ffe1e6;
+            --text-main: #333;
+            --text-sub: #777;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-            margin: 0; padding: 0; background-color: #f0f2f5;
-            color: var(--text-main); display: flex; justify-content: center;
-            min-height: 100vh;
-            overscroll-behavior-y: none; 
+            font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at top, #fff5f8 0, #f5f7ff 60%, #f5f5f5 100%);
+            color: var(--text-main);
         }
 
         .container {
-            width: 100%; max-width: 450px; background-color: #fff;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            display: flex; flex-direction: column;
-            position: relative;
+            max-width: 640px;
+            margin: 0 auto;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 16px 16px 28px;
         }
 
         .header {
-            padding: 15px 20px; background: #fff; display: flex;
-            justify-content: space-between; align-items: center; border-bottom: 1px solid #eee;
-            padding-top: max(15px, env(safe-area-inset-top));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
         }
-        .app-title { font-weight: bold; font-size: 1.1rem; color: #444; }
-        .version-badge { background: #81C784; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 5px; }
-        .btn-icon { cursor: pointer; font-size: 1.2rem; opacity: 0.6; }
 
-        .stats-bar {
-            display: flex; justify-content: space-around; padding: 10px 15px; background: #fff;
-            border-bottom: 1px solid #eee;
+        .app-title {
+            font-size: 1.2rem;
+            font-weight: 600;
         }
+
+        .version-badge {
+            font-size: 0.75rem;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: rgba(0,0,0,0.04);
+            margin-left: 6px;
+            color: #666;
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 999px;
+            transition: background 0.1s;
+        }
+        .btn-icon:active {
+            background: rgba(0,0,0,0.04);
+        }
+
+        .section-filter {
+            background-color: var(--bg-blue);
+            padding: 16px 14px 18px;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(105,135,255,0.16);
+        }
+
+        .filter-title {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .select-soft {
+            flex: 1;
+            padding: 8px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.95);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .mode-btn {
+            border-radius: 999px;
+            border: none;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.8);
+            cursor: pointer;
+            color: #555;
+        }
+
+        .mode-btn.active {
+            background: #fff;
+            color: #4a5cff;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .section-main {
+            margin-top: 10px;
+            margin-bottom: 12px;
+        }
+
+        .section-main-title {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 6px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            border: 1px solid #eee;
+            background: #fafafa;
+            cursor: pointer;
+            color: #555;
+        }
+        .tag.active {
+            background: #4a5cff;
+            color: #fff;
+            border-color: #4a5cff;
+        }
+
+        .switch-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .switch {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px 2px 3px;
+            border-radius: 999px;
+            background: #f2f2f2;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .switch-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ccc;
+            margin-right: 4px;
+            transition: all 0.15s;
+        }
+        .switch.active .switch-dot {
+            background: #4a5cff;
+            transform: translateX(1px);
+        }
+        .switch-label {
+            color: #555;
+        }
+
+        .time-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .time-row label {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .time-input {
+            width: 70px;
+            padding: 6px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 0.85rem;
+        }
+
+        .time-feedback {
+            font-size: 0.75rem;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .btn-main {
+            width: 100%;
+            border-radius: 999px;
+            border: none;
+            padding: 10px 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            color: #fff;
+            background: linear-gradient(135deg, #ff9aa2, #ffc8d1);
+            box-shadow: 0 8px 18px rgba(255, 154, 162, 0.4);
+            margin-top: 12px;
+        }
+        .btn-main:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 10px rgba(255, 154, 162, 0.35);
+        }
+
+        .section-display {
+            position: relative;
+            margin-top: 16px;
+            border-radius: 20px;
+            background: radial-gradient(circle at top, #ffe9f0 0, #fff 35%, #f3f6ff 100%);
+            padding: 18px 14px 20px;
+            min-height: 150px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.98);
+            border-radius: 18px;
+            padding: 14px 14px 12px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            min-width: 0;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .card-title span:first-child {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .card-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            margin-left: 4px;
+        }
+        .bg-frog { background: #e8f5e9; color: #2e7d32; }
+        .bg-flash { background: #fff8e1; color: #f9a825; }
+        .bg-cycle { background: #e3f2fd; color: #1565c0; }
+
+        .card-desc {
+            margin-top: 4px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .card-time {
+            margin-top: 6px;
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .btn-card-action {
+            border-radius: 999px;
+            border: none;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            background: #f3f4ff;
+            color: #4a5cff;
+            margin-right: 6px;
+        }
+        .btn-card-action:active {
+            background: #e0e2ff;
+        }
+
+        .section-input {
+            margin-top: 16px;
+            padding: 14px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .input-box {
+            border-radius: 14px;
+            border: 1px solid #eee;
+            background: #fafafa;
+            padding: 8px;
+        }
+
+        #inpTitle {
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: vertical;
+            min-height: 60px;
+            font-size: 0.9rem;
+            background: transparent;
+        }
+
+        .section-lists {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        .panel {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            padding: 10px 10px 8px;
+            display: flex;
+            flex-direction: column;
+            max-height: 260px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .panel-title {
+            font-weight: 600;
+        }
+
+        .panel-subtitle {
+            font-size: 0.7rem;
+            color: #999;
+        }
+
+        .panel-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            padding: 4px 0;
+            border-bottom: 1px dashed #f0f0f0;
+        }
+        .item-main {
+            display: flex;
+            flex-direction: column;
+        }
+        .item-title {
+            font-size: 0.85rem;
+        }
+        .item-meta {
+            font-size: 0.7rem;
+            color: #999;
+        }
+
+        .item-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .small-btn {
+            border-radius: 999px;
+            border: none;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .small-btn:active {
+            transform: translateY(1px);
+        }
+        .small-btn.primary {
+            background: #4a5cff;
+            color: #fff;
+        }
+        .small-btn.outline {
+            background: #fff;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+
+        .section-archive {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+            gap: 12px;
+        }
+
+        .archive-panel {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            padding: 10px 10px 8px;
+        }
+
+        .archive-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .archive-item {
+            font-size: 0.8rem;
+            padding: 4px 0;
+            border-bottom: 1px dashed #f0f0f0;
+        }
+
+        .section-stats {
+            margin-top: 18px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            padding: 10px 10px 10px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 8px;
+        }
+
         .stat-btn {
             flex: 1; margin: 0 5px; padding: 8px; border-radius: 12px; cursor: pointer;
             background: #fafafa; border: 1px solid #eee; text-align: center;
@@ -70,146 +485,233 @@
         .stat-btn.willpower { color: #5C6BC0; }
         .stat-btn.joy { color: #FFA726; }
 
-        .section-filter {
-            background-color: var(--bg-blue); padding: 20px; text-align: center;
-            border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;
-            transition: background 0.4s; position: relative; z-index: 10;
-        }
-        .mode-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
-        .mode-tab {
-            padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer;
-            background: rgba(255,255,255,0.5); transition: all 0.2s;
-        }
-        .mode-tab.active { background: #fff; font-weight: bold; transform: translateY(-1px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        
-        .control-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        select { padding: 8px 12px; border: none; border-radius: 10px; background: rgba(255,255,255,0.9); font-size: 16px; }
-        
-        .btn-main {
-            background-color: #FF9AA2; color: white; font-weight: bold; font-size: 1.1rem;
-            padding: 12px 40px; border: none; border-radius: 30px;
-            box-shadow: 0 4px 12px rgba(255, 154, 162, 0.4); cursor: pointer; transition: transform 0.1s;
-        }
-        .btn-main:active { transform: scale(0.95); }
-
-        .section-display {
-            flex-grow: 1; background-color: var(--bg-pink); display: flex;
-            flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; min-height: 220px; transition: background 0.4s;
-        }
-        .card {
-            background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06); display: none;
-            animation: slideUp 0.4s ease-out forwards;
-        }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .card-icon { font-size: 3.5rem; display: block; margin-bottom: 10px; }
-        .card-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 5px; color: #333; }
-        .card-desc { font-size: 0.9rem; color: #777; line-height: 1.6; margin-bottom: 15px; }
-        .card-time { 
-            display: inline-block; background: #f0f0f0; color: #888; padding: 2px 8px; 
-            border-radius: 8px; font-size: 0.75rem; margin-top: 5px; 
-        }
-        
-        .card-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; margin-left: 5px; color: #fff; }
-        .bg-cycle { background: var(--cycle-purple); }
-        .bg-frog { background: var(--frog-green); }
-        .bg-flash { background: var(--flash-yellow); color: #555; }
-
-        .btn-card-action {
-            background: #f0f0f0; padding: 8px 18px; border-radius: 15px; font-size: 0.85rem; 
-            border: none; cursor: pointer; color: #555; margin: 0 5px;
+        .section-settings {
+            margin-top: 18px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            padding: 12px 12px 16px;
         }
 
-        .section-input { background-color: var(--bg-wood); padding: 20px; }
-        .input-box {
-            background: #fff; padding: 5px; border-radius: 15px; display: flex; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 10px;
+        .settings-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 6px;
         }
-        textarea#inpTitle { 
-            border: none; padding: 10px; flex: 1; border-radius: 10px; outline: none; 
-            font-size: 16px; font-family: inherit; resize: none; height: 24px; line-height: 24px;
+
+        .settings-group {
+            margin-bottom: 10px;
         }
-        .btn-add { background: #B5EAD7; border: none; padding: 0 20px; border-radius: 10px; font-weight: bold; color: #555; cursor: pointer; }
-        
-        .input-options { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-        .tags-row { display: flex; gap: 6px; flex-wrap: wrap; }
-        .tag {
-            padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; background: rgba(0,0,0,0.05); 
-            cursor: pointer; border: 1px solid transparent; transition: all 0.2s;
+
+        .settings-group label {
+            font-size: 0.8rem;
+            color: #555;
         }
-        .tag.active { background: #C7CEEA; border-color: #989ec2; color: #333; }
-        .tag[data-v="sport"].active { background: var(--sport-green); border-color: #99cbb9; }
 
-        .switch-container { display: flex; gap: 8px; }
-        .switch-btn {
-            font-size: 0.75rem; color: #666; display: flex; align-items: center; gap: 5px; cursor: pointer;
-            background: rgba(255,255,255,0.5); padding: 4px 8px; border-radius: 10px; border: 1px solid transparent;
-            transition: all 0.2s;
+        .settings-text {
+            width: 100%;
+            min-height: 60px;
+            font-size: 0.8rem;
+            margin-top: 4px;
         }
-        .switch-btn.active-cycle { background: var(--cycle-purple); color: #fff; font-weight: bold; border-color: var(--cycle-purple); }
-        .switch-btn.active-flash { background: var(--flash-yellow); color: #555; font-weight: bold; border-color: #FBC02D; }
 
-        .time-select-small {
-            font-size: 16px; padding: 4px; border-radius: 8px; border: 1px solid #ddd; color: #666;
-            transition: opacity 0.3s;
+        .settings-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
-        .time-select-small.disabled { opacity: 0.3; pointer-events: none; }
 
-        .section-list { background-color: #fff; padding: 20px; }
-        .list-section-header {
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 10px 0; border-bottom: 1px solid #eee; cursor: pointer; margin-top: 10px;
+        .btn-secondary {
+            border-radius: 999px;
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            background: #fafafa;
+            cursor: pointer;
         }
-        .list-title { font-size: 0.95rem; font-weight: bold; color: #555; }
-        .task-list { list-style: none; padding: 0; margin: 0; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-        .task-list.open { max-height: 400px; overflow-y: auto; }
-        
-        .task-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: 1px solid #f9f9f9; }
-        .task-status-done { opacity: 0.4; text-decoration: line-through; }
-        .list-badge { font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; margin-left: 5px; border: 1px solid #eee; color: #888;}
-        .lb-frog { color: var(--frog-green); border-color: var(--frog-green); font-weight:bold; }
-        .lb-flash { color: #FBC02D; border-color: #FBC02D; }
+        .btn-secondary:active {
+            background: #f0f0f0;
+        }
 
-        .footprint-time { font-size: 0.7rem; color: #aaa; margin-right: 10px; font-family: monospace;}
-        .footprint-item { color: #666; font-size: 0.85rem; }
+        .footer {
+            margin-top: 18px;
+            font-size: 0.7rem;
+            color: #aaa;
+            text-align: center;
+        }
 
-        .archive-section { margin-top: 20px; border-top: 4px solid #f0f2f5; padding-top: 15px; }
-        .archive-list { display: none; margin-top: 10px; color: #999; font-size: 0.85rem; }
-        .archive-item { padding: 5px 0; display: flex; gap: 10px; }
-        .archive-date { font-family: monospace; color: #ccc; }
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(40px);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s;
+            z-index: 999;
+        }
 
-        .section-manual { background-color: #fff; padding: 20px; border-top: 1px solid #eee; color: #666; font-size: 0.9rem; line-height: 1.6; }
-        details { background: #f9f9f9; border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
-        summary { padding: 15px; font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; color: #444; }
-        summary::after { content: '+'; font-size: 1.2rem; font-weight: normal; color: #999; }
-        details[open] summary::after { content: '-'; }
-        .manual-content { padding: 0 15px 20px 15px; border-top: 1px solid #eee; font-size: 0.85rem; }
-        .manual-h3 { font-weight: bold; color: #333; margin: 15px 0 5px 0; }
-        .manual-tag { background: #eee; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; margin: 0 2px; }
+        .toast-show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
 
-        .section-settings { background-color: var(--bg-setting); padding: 20px; border-top: 1px solid #eee; padding-bottom: 80px;}
-        .settings-title { font-size: 0.9rem; font-weight: bold; color: #666; margin-bottom: 10px; }
-        .backup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:10px;}
-        .btn-outline { background: #fff; border: 1px solid #bbb; color: #555; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
-        .btn-file { background: #e1eefd; border: 1px solid #bbd4f0; color: #1565C0; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
-        textarea { width: 100%; height: 80px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; color:#555; padding: 8px; font-family: monospace; }
-        .btn-danger { width: 100%; padding: 10px; background: #ffebee; border: 1px solid #ffcdd2; color: #c62828; border-radius: 8px; cursor: pointer; margin-top: 20px; font-size: 0.8rem; }
+        .custom-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 900;
+        }
 
-        .custom-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; display: none; justify-content: center; align-items: center; }
-        .custom-modal { background: white; width: 80%; max-width: 320px; padding: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: left; animation: popIn 0.2s ease-out; max-height: 80vh; overflow-y: auto; }
-        @keyframes popIn { from {transform: scale(0.9); opacity: 0;} to {transform: scale(1); opacity: 1;} }
-        .modal-text { margin-bottom: 20px; font-size: 0.95rem; color: #333; line-height: 1.6; }
-        .modal-btns { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
-        .modal-btn { padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; flex: 1; text-align: center;}
-        .modal-btn.cancel { background: #f0f0f0; color: #666; }
-        .modal-btn.confirm { background: var(--bg-blue); color: #006064; }
-        .modal-btn.danger { background: var(--danger-red); color: white; }
-        .toast-notification { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 24px; border-radius: 30px; font-size: 0.9rem; z-index: 2000; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .toast-notification.show { top: 20px; }
+        .custom-modal {
+            background: #fff;
+            border-radius: 18px;
+            padding: 16px;
+            max-width: 320px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
 
+        .modal-text {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .modal-btns {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .modal-btn {
+            border-radius: 999px;
+            border: none;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .modal-btn.primary {
+            background: #4a5cff;
+            color: #fff;
+        }
+
+        .modal-btn.outline {
+            background: #f5f5f5;
+            color: #555;
+        }
+
+        /* --- 🎰 扭蛋机视觉层 --- */
+        #gachaLayer {
+            position: absolute;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: radial-gradient(
+                circle at top,
+                rgba(255,255,255,0.95),
+                rgba(255,255,255,0.78)
+            );
+            z-index: 20;
+            opacity: 1;
+        }
+        .gacha-stage {
+            position: relative;
+            width: 290px;
+            max-width: 88%;
+        }
+        #gachaImg {
+            width: 100%;
+            display: block;
+            border-radius: 24px;
+            box-shadow: 0 10px 26px rgba(0,0,0,0.16);
+            transform-origin: 50% 80%;
+            transition: opacity 0.6s ease-out;
+        }
+        @keyframes machineShake {
+            0%   { transform: translateY(0) rotate(0deg); }
+            20%  { transform: translateY(-4px) rotate(-1deg); }
+            40%  { transform: translateY(2px) rotate(1deg); }
+            60%  { transform: translateY(-2px) rotate(-0.5deg); }
+            80%  { transform: translateY(1px) rotate(0.5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        .machine-shake {
+            animation: machineShake 0.7s ease-out;
+        }
+        #eggOut {
+            position: absolute;
+            left: 77%;
+            bottom: 88px;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            opacity: 0;
+        }
+        @keyframes eggFly {
+            0% {
+                left: 77%;
+                bottom: 72px;
+                transform: translateX(-50%) scale(0.7);
+                opacity: 0;
+            }
+            15% {
+                left: 77%;
+                bottom: 88px;
+                transform: translateX(-50%) scale(0.9);
+                opacity: 1;
+            }
+            55% {
+                left: 62%;
+                bottom: 60%;
+                transform: translateX(-50%) scale(1.15);
+                opacity: 1;
+            }
+            85% {
+                left: 50%;
+                bottom: 44%;
+                transform: translateX(-50%) scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                left: 50%;
+                bottom: 44%;
+                transform: translateX(-50%) scale(1.25);
+                opacity: 1;
+            }
+        }
+        @keyframes eggBurst {
+            0% {
+                transform: translateX(-50%) scale(1.25);
+                opacity: 1;
+            }
+            30% {
+                transform: translateX(-50%) scale(1.6);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(-50%) scale(2.0);
+                opacity: 0;
+            }
+        }
+        .gm-caption {
+            margin-top: 10px;
+            font-size: 0.75rem;
+            color: #888;
+        }
     </style>
 </head>
+
 <body>
 
 <div id="toast" class="toast-notification">✅ 操作成功</div>
@@ -227,29 +729,60 @@
         <span class="btn-icon" onclick="scrollToSettings()">⚙️</span>
     </div>
 
-    <div class="stats-bar">
-        <div class="stat-btn willpower" onclick="incrementStat('willpower')">
-            <span class="stat-label">🛡️ 意志力</span>
-            <span class="stat-count" id="stat-willpower">0</span>
+    <div class="section-filter">
+        <div class="filter-title">当前状态</div>
+        <div class="filter-row">
+            <select id="selContext" class="select-soft">
+                <option value="indoor">🏠 在家/室内</option>
+                <option value="desktop">💻 坐在桌前</option>
+                <option value="outdoor">🌳 户外/可走动</option>
+            </select>
+            <select id="selTime" class="select-soft">
+                <option value="15">⏱ 15 min 以内</option>
+                <option value="30" selected>⏱ 30 min 左右</option>
+                <option value="60">⏱ 1 小时+</option>
+                <option value="120">⏱ 2 小时+</option>
+            </select>
         </div>
-        <div class="stat-btn joy" onclick="incrementStat('joy')">
-            <span class="stat-label">✨ 小确幸</span>
-            <span class="stat-count" id="stat-joy">0</span>
+        <div class="mode-switch">
+            <button class="mode-btn active" id="mode-mix" onclick="setMode('mix')">🔮 帮我选 (混合)</button>
+            <button class="mode-btn" id="mode-culture" onclick="setMode('culture')">🎬 精神食粮</button>
+            <button class="mode-btn" id="mode-vinyl" onclick="setMode('vinyl')">💿 听一张碟</button>
+            <button class="mode-btn" id="mode-sport" onclick="setMode('sport')">🏃 起来动动</button>
+            <button class="mode-btn" id="mode-sos" onclick="setMode('sos')">🆘 我撑不住了</button>
         </div>
     </div>
 
-    <div class="section-filter" id="filterSec">
-        <div class="mode-tabs">
-            <div class="mode-tab active" onclick="setMode('normal')">🔮 混合/全域</div>
-            <div class="mode-tab" onclick="setMode('culture')">📚 只看书影</div>
-            <div class="mode-tab" onclick="setMode('vinyl')">🎵 只听唱片</div>
-            <div class="mode-tab" onclick="setMode('sos')" style="color:#d9534f">🆘 SOS</div>
+    <div class="section-main">
+        <div class="section-main-title">任务标签 & 模式</div>
+        <div class="control-group" id="controls-normal">
+            <div class="tag-row">
+                <div class="tag active" data-v="indoor" onclick="pickTag(this)">🏠 室内</div>
+                <div class="tag" data-v="desktop" onclick="pickTag(this)">💻 书桌</div>
+                <div class="tag" data-v="outdoor" onclick="pickTag(this)">🌳 户外</div>
+                <div class="tag" data-v="sport" onclick="pickTag(this)">🏃 运动</div>
+                <div class="tag" data-v="culture" onclick="pickTag(this)">📚 书/影</div>
+                <div class="tag" data-v="vinyl" onclick="pickTag(this)">🎵 听碟</div>
+            </div>
+            <div class="switch-row">
+                <div class="switch" id="switch-frog" onclick="toggleSwitch('frog')">
+                    <div class="switch-dot"></div><div class="switch-label">🐸 青蛙任务 (高阻力)</div>
+                </div>
+                <div class="switch" id="switch-flash" onclick="toggleSwitch('flash')">
+                    <div class="switch-dot"></div><div class="switch-label">⚡️ 闪电速办 (5min 内)</div>
+                </div>
+                <div class="switch" id="switch-cycle" onclick="toggleSwitch('cycle')">
+                    <div class="switch-dot"></div><div class="switch-label">🔄 每日循环</div>
+                </div>
+            </div>
+            <div class="time-row">
+                <label for="inpTime">预计时长:</label>
+                <input id="inpTime" class="time-input" type="number" min="0" max="240" value="30">
+                <span style="font-size:0.8rem; color:#888;">min (0 = 灵活)</span>
+            </div>
+            <div id="timeFeedback" class="time-feedback"></div>
         </div>
-        <div id="controls-normal" class="control-group">
-            <select id="selContext"><option value="desktop">💻 书桌前</option><option value="indoor">🏠 室内/家</option><option value="outdoor">🌳 户外</option></select>
-            <select id="selTime"><option value="30">⏳ 有30分钟</option><option value="60">⏳ 有1小时</option><option value="120">⏳ 有2小时+</option></select>
-        </div>
-        <div id="controls-sos" class="control-group" style="display:none; color: #555; font-size:0.9rem;"><span>🍃 允许自己暂时停下来...</span></div>
+        <div id="controls-sos" class="control-group" style="display:none; color: #555; font-size:0.9rem;"><span>🍃 允许自己暂时停下来，做一些「不算任务」的事，只是重启身心。</span></div>
         <button class="btn-main" onclick="draw()" id="mainBtn">抽取任务</button>
     </div>
 
@@ -265,109 +798,102 @@
                 <button class="btn-card-action" onclick="finishTask()" id="btnFinish">去完成</button>
             </div>
         </div>
+
+        <!-- 扭蛋机动画层（非 SOS 模式使用） -->
+        <div id="gachaLayer">
+            <div class="gacha-stage">
+                <img id="gachaImg" src="gacha-machine.png" alt="Gacha Machine">
+                <img id="eggOut" src="" alt="Capsule">
+            </div>
+            <div class="gm-caption">命运扭一扭…</div>
+        </div>
     </div>
 
     <div class="section-input">
         <div class="input-box">
-            <textarea id="inpTitle" rows="1" placeholder="输入事项... (*开头标记重要/青蛙)" oninput="autoTag()" onkeypress="handleEnter(event)"></textarea>
-            <button class="btn-add" onclick="addNew()">＋</button>
+            <textarea id="inpTitle" placeholder="把你想做的一切都丢进来，比如：&#10;看《霸王别姬》&#10;整理书桌&#10;* 论文开个头" onkeydown="handleEnter(event)" oninput="autoDetectTypeAndTime()"></textarea>
         </div>
-        <div class="input-options">
-            <div class="tags-row">
-                <div class="tag active" data-v="indoor" onclick="pickTag(this)">🏠 室内</div>
-                <div class="tag" data-v="desktop" onclick="pickTag(this)">💻 桌前</div>
-                <div class="tag" data-v="outdoor" onclick="pickTag(this)">🌳 户外</div>
-                <div class="tag" data-v="sport" onclick="pickTag(this)">🏃 运动</div>
-                <div class="tag" data-v="culture" onclick="pickTag(this)">📚 书/影</div>
-                <div class="tag" data-v="vinyl" onclick="pickTag(this)">🎵 听碟</div>
-            </div>
-        </div>
-        <div class="input-options" style="margin-top:8px;">
-            <div class="switch-container">
-                <div class="switch-btn" id="cycleSwitch" onclick="toggleSwitch('cycle')"><span>🔄 每日循环</span></div>
-                <div class="switch-btn" id="flashSwitch" onclick="toggleSwitch('flash')"><span>⚡️ 速办模式</span></div>
-            </div>
-            
-            <select id="inpTime" class="time-select-small">
-                <option value="5">5m (速办)</option>
-                <option value="15">15m</option>
-                <option value="30" selected>30m</option>
-                <option value="60">1h</option>
-                <option value="120">2h+</option>
-            </select>
-        </div>
-        <div id="timeFeedback" style="font-size:0.7rem; color:#75B79E; margin-top:5px; margin-left:5px; height:1rem;"></div>
-    </div>
-
-    <div class="section-list">
-        <div class="list-section-header" onclick="toggleList('dailyList')"><span class="list-title">📋 日常 & 运动 (<span id="dailyCount">0</span>)</span><span style="font-size:0.8rem; color:#ccc">▼</span></div>
-        <ul id="dailyList" class="task-list open"></ul>
-        
-        <div class="list-section-header" onclick="toggleList('mediaList')"><span class="list-title">🎬 媒体库房 (<span id="mediaCount">0</span>)</span><span style="font-size:0.8rem; color:#ccc">▼</span></div>
-        <ul id="mediaList" class="task-list"></ul>
-
-        <div class="list-section-header" onclick="toggleList('logList')">
-            <span class="list-title" style="color:var(--footprint-grey)">👣 今日足迹 (<span id="logCount">0</span>)</span>
-            <span style="font-size:0.8rem; color:#ccc">▼</span>
-        </div>
-        <ul id="logList" class="task-list"></ul>
-
-        <div class="archive-section">
-            <div class="list-section-header" onclick="toggleList('archiveList')"><span class="list-title" style="color:var(--gold)">🏆 荣誉殿堂 (<span id="arcCount">0</span>)</span><span style="font-size:0.8rem; color:#ccc">▼</span></div>
-            <div id="archiveList" class="task-list"></div>
+        <div style="margin-top:8px; text-align:right;">
+            <button class="btn-secondary" onclick="addNew()">加入任务池</button>
         </div>
     </div>
 
-    <div class="section-manual">
-        <details>
-            <summary>📖 用户手册 & 逻辑词典</summary>
-            <div class="manual-content">
-                <div class="manual-h3">💡 核心概念</div>
-                <p>Anchor 是一个帮你对抗无序、找回生活掌控感的工具。把想做的事丢进去，让“命运”帮你做决定。</p>
-                <div class="manual-h3">⌨️ 智能输入</div>
-                <p>支持“说人话”和批量粘贴。每行一个任务。</p>
-                <ul>
-                    <li><b>自动书影：</b> 输入 <span class="manual-tag">看/读/书/影</span> 开头，自动归类为文化，并加书名号。</li>
-                    <li><b>闪电速办：</b> 输入 <span class="manual-tag">洗/刷/理/拆/扔/喝</span> 等，自动标记为 <span class="manual-tag">⚡️速办</span> (5min)。</li>
-                    <li><b>青蛙任务：</b> 输入 <span class="manual-tag">*</span> (星号) 开头，标记为困难重要的 <span class="manual-tag">🐸青蛙</span>。</li>
-                    <li><b>每日循环：</b> 输入 <span class="manual-tag">每天/每日</span>，自动开启循环。</li>
-                </ul>
-                <div class="manual-h3">🎲 抽取逻辑</div>
-                <ul>
-                    <li><b>混合模式：</b> 根据当下时间、地点，从所有库中随机抽取。</li>
-                    <li><b>青蛙优先：</b> 在书桌前且时间充足时，大概率优先推“青蛙”。</li>
-                    <li><b>防重复：</b> 最近刚抽过的任务，短时间内不会再出现。</li>
-                </ul>
-                <div class="manual-h3">📊 计数器与归档</div>
-                <ul>
-                    <li><b>🛡️ 意志力：</b> 想做坏习惯但忍住时，点一下。</li>
-                    <li><b>✨ 小确幸：</b> 遇到开心的小事时，点一下。</li>
-                    <li><b>👣 今日足迹：</b> 记录今天的日常流水，次日自动清空。</li>
-                    <li><b>🏆 荣誉殿堂：</b> 永久保存读完的书和看过的电影。</li>
-                </ul>
-                <div class="manual-h3">🆘 SOS 模式</div>
-                <p>当你感到身心宕机、无法思考时使用。它只提供极低门槛的微行动（如深呼吸、喝水），帮你重启状态。</p>
+    <div class="section-lists">
+        <div class="panel">
+            <div class="panel-header">
+                <div>
+                    <span class="panel-title">🧺 日常 & 运动</span>
+                    <span class="panel-subtitle">今日高频的小事</span>
+                </div>
+                <button class="btn-secondary" style="padding:2px 8px; font-size:0.7rem;" onclick="clearDailyLog()">清空足迹</button>
             </div>
-        </details>
+            <div id="dailyList" class="panel-list"></div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <div>
+                    <span class="panel-title">🎞 媒体库房</span>
+                    <span class="panel-subtitle">书 / 电影 / 唱片 等</span>
+                </div>
+            </div>
+            <div id="mediaList" class="panel-list"></div>
+        </div>
     </div>
 
-    <div class="section-settings" id="settingSec">
-        <div class="settings-title">📡 数据方舟 (Offline)</div>
-        <div style="font-size:0.8rem; color:#1565C0; margin-bottom:5px; font-weight:bold;">📂 文件备份 (电脑端推荐)</div>
-        <div class="backup-grid">
-            <button class="btn-file" onclick="exportToFile()">📥 导出文件</button>
-            <button class="btn-file" onclick="triggerImport()">📤 导入文件 (Merge)</button>
+    <div class="section-archive">
+        <div class="archive-panel">
+            <div class="panel-header">
+                <span class="panel-title">👣 今日足迹</span>
+                <span class="panel-subtitle">仅保留当天记录</span>
+            </div>
+            <div id="logList" class="archive-list"></div>
         </div>
-        <hr style="border:0; border-top:1px solid #ddd; margin:15px 0;">
-        <div style="font-size:0.8rem; color:#666; margin-bottom:5px; font-weight:bold;">📝 文本操作 (手机端)</div>
-        <div class="backup-grid">
-            <button class="btn-outline" onclick="copyToClip()">📋 复制文本码</button>
-            <button class="btn-outline" onclick="document.getElementById('dataArea').value=''">🗑️ 清空</button>
+        <div class="archive-panel">
+            <div class="panel-header">
+                <span class="panel-title">🏆 荣誉殿堂</span>
+                <span class="panel-subtitle">只记录书 / 影 / 大工程</span>
+            </div>
+            <div id="archiveList" class="archive-list"></div>
         </div>
-        <textarea id="dataArea" class="setting-textarea" placeholder="在此长按粘贴数据代码..."></textarea>
-        <button class="btn-file" style="width:100%; background:#E8F5E9; border-color:#A5D6A7; color:#2E7D32;" onclick="executeImport()">✅ 确认导入 (Merge)</button>
-        <button class="btn-danger" onclick="tryResetAll()">🗑️ 格式化/重置所有数据</button>
-        <input type="file" id="fileInput" style="display:none" onchange="importFromFile(this)">
+    </div>
+
+    <div class="section-stats">
+        <div class="panel-header">
+            <span class="panel-title">💎 念头计数器</span>
+            <span class="panel-subtitle">记录那些你看不见的「胜利」</span>
+        </div>
+        <div class="stats-row">
+            <div class="stat-btn willpower" onclick="incStat('willpower')">
+                <div><span class="stat-label">🛡️ 意志力</span><span class="stat-count" id="statWill">0</span></div>
+                <div style="font-size:0.7rem; margin-top:2px;">战胜坏习惯 / 想做但忍住</div>
+            </div>
+            <div class="stat-btn joy" onclick="incStat('joy')">
+                <div><span class="stat-label">✨ 小确幸</span><span class="stat-count" id="statJoy">0</span></div>
+                <div style="font-size:0.7rem; margin-top:2px;">捕捉到一点点开心瞬间</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-settings" id="settings">
+        <div class="settings-title">📦 数据备份 & 导入</div>
+        <div class="settings-group">
+            <label>当前数据导出（json 文本）：</label>
+            <textarea id="exportBox" class="settings-text" readonly></textarea>
+        </div>
+        <div class="settings-group">
+            <label>导入数据（请粘贴 json 内容）：</label>
+            <textarea id="importBox" class="settings-text" placeholder="在这里粘贴之前导出的 json，点击下方「合并导入」"></textarea>
+        </div>
+        <div class="settings-actions">
+            <button class="btn-secondary" onclick="doExport()">刷新导出内容</button>
+            <button class="btn-secondary" onclick="doImport()">合并导入</button>
+            <button class="btn-secondary" onclick="resetAll()">⚠️ 清空所有数据</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        本工具仅在本机浏览器存储数据，不上传云端。请记得「导出备份」。<br>
+        Anchor · by you 🌊
     </div>
 </div>
 
@@ -387,37 +913,69 @@
     const KEY_ARCHIVE = 'anchor_live_archive';
     const KEY_LOG = 'anchor_live_log';
     const KEY_STATS = 'anchor_live_stats';
-    const KEY_VISITED = 'anchor_has_visited';
 
-    const defaultDB = [
-        { id: 1, title: "听一张喜欢的黑胶", type: "vinyl", desc: "音乐时间", time: 0 },
-        { id: 2, title: "喝水果茶", type: "indoor", desc: "补充维C", time: 15 }
-    ];
+    let db = [];
+    let archive = [];
+    let dailyLog = [];
+    let userStats = { willpower: 0, joy: 0 };
 
-    let db = JSON.parse(localStorage.getItem(KEY_DB)) || [];
-    let archive = JSON.parse(localStorage.getItem(KEY_ARCHIVE)) || [];
-    let dailyLog = JSON.parse(localStorage.getItem(KEY_LOG)) || [];
-    let userStats = JSON.parse(localStorage.getItem(KEY_STATS)) || { willpower: 0, joy: 0 };
-    
-    let recentHistory = []; 
-    let mode = 'normal';
+    let mode = 'mix';
+    let switchState = { frog:false, flash:false, cycle:false };
     let currentTask = null;
-    let switchState = { cycle: false, flash: false };
+    let isCycleActive = false;
 
-    // --- 🚀 初始化 (强制在 DOM 加载后执行) ---
-    document.addEventListener('DOMContentLoaded', () => {
-        if(db.length === 0 && archive.length === 0) db = defaultDB; 
-        checkLogExpiry();
-        renderList(); renderArchive(); renderLog(); updateStatsUI(); 
-        setMode('normal');
-        if (!localStorage.getItem(KEY_VISITED)) {
-            alert("👋 欢迎来到 Anchor v4.6！\n\n现在彻底支持离线使用了。");
-            localStorage.setItem(KEY_VISITED, 'true');
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('toast-show');
+        setTimeout(() => t.classList.remove('toast-show'), 1800);
+    }
+
+    function openModal(msg, buttons) {
+        const overlay = document.getElementById('modalOverlay');
+        const msgEl = document.getElementById('modalMsg');
+        const btnContainer = document.getElementById('modalBtnContainer');
+        msgEl.innerText = msg;
+        btnContainer.innerHTML = "";
+        buttons.forEach(b => {
+            const btn = document.createElement('button');
+            btn.className = "modal-btn " + (b.primary ? "primary" : "outline");
+            btn.innerText = b.label;
+            btn.onclick = () => { overlay.style.display = 'none'; if (b.onClick) b.onClick(); };
+            btnContainer.appendChild(btn);
+        });
+        overlay.style.display = 'flex';
+    }
+
+    function scrollToSettings() {
+        const s = document.getElementById('settings');
+        if (s) s.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function loadData() {
+        try {
+            const rawDb = localStorage.getItem(KEY_DB);
+            const rawArc = localStorage.getItem(KEY_ARCHIVE);
+            const rawLog = localStorage.getItem(KEY_LOG);
+            const rawStats = localStorage.getItem(KEY_STATS);
+            db = rawDb ? JSON.parse(rawDb) : [];
+            archive = rawArc ? JSON.parse(rawArc) : [];
+            dailyLog = rawLog ? JSON.parse(rawLog) : [];
+            userStats = rawStats ? JSON.parse(rawStats) : { willpower: 0, joy: 0 };
+        } catch(e) {
+            db = [];
+            archive = [];
+            dailyLog = [];
+            userStats = { willpower: 0, joy: 0 };
         }
-    });
+        renderList();
+        renderArchive();
+        renderLog();
+        renderStats();
+        doExport();
+    }
 
-    // --- 核心逻辑 ---
-    function save() {
+    function saveData() {
         localStorage.setItem(KEY_DB, JSON.stringify(db));
         localStorage.setItem(KEY_ARCHIVE, JSON.stringify(archive));
         localStorage.setItem(KEY_LOG, JSON.stringify(dailyLog));
@@ -434,116 +992,214 @@
         const sortedDB = [...db].sort((a,b) => b.id - a.id);
 
         sortedDB.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'task-item';
-            const isDoneToday = (item.recurrence === 'daily' && item.lastDone === todayStr);
-            if (isDoneToday) li.classList.add('task-status-done');
+            const li = document.createElement('div');
+            li.className = "item-row";
+            const main = document.createElement('div');
+            main.className = "item-main";
+            const t = document.createElement('div');
+            t.className = "item-title";
+            t.innerText = item.title;
+            const meta = document.createElement('div');
+            meta.className = "item-meta";
+            let metaStr = "";
+            if (item.isFrog) metaStr += "🐸 青蛙 ";
+            if (item.isQuick) metaStr += "⚡️ 速办 ";
+            if (item.recurrence === 'daily') metaStr += "🔄 每日 ";
+            metaStr += `⏱ ${item.time || 30}min · ${item.type || '日常'}`;
+            if (item.recurrence === 'daily' && item.lastDone === todayStr) metaStr += " · ✅ 今日已完成";
+            meta.innerText = metaStr;
+            main.appendChild(t);
+            main.appendChild(meta);
 
-            const seriesBadge = item.isSeries ? `<span class="list-badge">∞系列</span>` : '';
-            const cycleBadge = item.recurrence === 'daily' ? 
-                (isDoneToday ? `<span class="list-badge">今天✅</span>` : `<span class="list-badge">🔄</span>`) : '';
-            
-            let extraBadges = "";
-            if(item.isFrog) extraBadges += `<span class="list-badge lb-frog">🐸</span>`;
-            if(item.isQuick) extraBadges += `<span class="list-badge lb-flash">⚡️</span>`;
+            const ctr = document.createElement('div');
+            ctr.className = "item-controls";
+            const btnDone = document.createElement('button');
+            btnDone.className = "small-btn primary";
+            btnDone.innerText = "Done";
+            btnDone.onclick = () => finishDirectly(item.id);
+            const btnDel = document.createElement('button');
+            btnDel.className = "small-btn outline";
+            btnDel.innerText = "删";
+            btnDel.onclick = () => removeItem(item.id);
+            ctr.appendChild(btnDone);
+            ctr.appendChild(btnDel);
 
-            let tDisplay = "";
-            if (item.time === 0) tDisplay = `<span style="font-size:0.7rem;color:#ccc;margin-left:5px;">任意</span>`;
-            else if (item.time) tDisplay = `<span style="font-size:0.7rem;color:#ccc;margin-left:5px;">${item.time}m</span>`;
+            li.appendChild(main);
+            li.appendChild(ctr);
 
-            li.innerHTML = `
-                <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:20px;text-align:center;">${getSmartIcon(item)}</span>
-                    <span style="font-size:0.9rem;color:#555;">${item.title}</span>
-                    ${seriesBadge}${cycleBadge}${extraBadges}${tDisplay}
-                </div>
-                <div class="task-del" onclick="tryDeleteItem(${item.id})">🗑️</div>
-            `;
-
-            if (item.type === 'culture' || item.type === 'vinyl') { mediaList.appendChild(li); mCount++; } 
-            else { dailyList.appendChild(li); dCount++; }
+            if (item.type === 'culture' || item.type === 'vinyl') {
+                mediaList.appendChild(li);
+                mCount++;
+            } else {
+                dailyList.appendChild(li);
+                dCount++;
+            }
         });
-        document.getElementById('dailyCount').innerText = dCount;
-        document.getElementById('mediaCount').innerText = mCount;
+
+        if (dCount === 0) dailyList.innerHTML = "<div style='font-size:0.8rem; color:#999;'>暂无日常任务</div>";
+        if (mCount === 0) mediaList.innerHTML = "<div style='font-size:0.8rem; color:#999;'>暂无书/影/碟 类任务</div>";
     }
 
     function renderArchive() {
         const list = document.getElementById('archiveList');
-        if(!list) return;
+        if (!list) return;
         list.innerHTML = "";
-        document.getElementById('arcCount').innerText = archive.length;
-        archive.forEach(item => {
+        if (archive.length === 0) {
+            list.innerHTML = "<div style='font-size:0.8rem; color:#999;'>还没有荣耀记录</div>";
+            return;
+        }
+        const sorted = [...archive].sort((a,b) => b.doneAt - a.doneAt);
+        sorted.forEach(item => {
             const div = document.createElement('div');
-            div.className = 'archive-item';
-            div.innerHTML = `<span class="archive-date">[${item.finishDate}]</span><span>${item.title}</span>`;
+            div.className = "archive-item";
+            const d = new Date(item.doneAt);
+            const ds = d.toLocaleDateString();
+            div.innerText = `[${ds}] ${item.title}`;
             list.appendChild(div);
         });
     }
 
     function renderLog() {
         const list = document.getElementById('logList');
-        if(!list) return;
+        if (!list) return;
+        const todayStr = new Date().toDateString();
+        const todayItems = dailyLog.filter(l => {
+            const d = new Date(l.time);
+            return d.toDateString() === todayStr;
+        });
         list.innerHTML = "";
-        document.getElementById('logCount').innerText = dailyLog.length;
-        dailyLog.forEach(log => {
-            const li = document.createElement('li');
-            li.className = 'task-item';
-            li.innerHTML = `
-                <div style="display:flex;align-items:center;">
-                    <span class="footprint-time">${log.timeStr}</span>
-                    <span class="footprint-item">${log.icon} ${log.title}</span>
-                </div>
-            `;
-            list.appendChild(li);
+        if (todayItems.length === 0) {
+            list.innerHTML = "<div style='font-size:0.8rem; color:#999;'>今天还没有任何足迹</div>";
+            return;
+        }
+        const sorted = [...todayItems].sort((a,b) => b.time - a.time);
+        sorted.forEach(item => {
+            const div = document.createElement('div');
+            div.className = "archive-item";
+            const d = new Date(item.time);
+            const ts = d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+            div.innerText = `[${ts}] ${item.title}`;
+            list.appendChild(div);
         });
     }
-    
-    function updateStatsUI() {
-        const elWill = document.getElementById('stat-willpower');
-        const elJoy = document.getElementById('stat-joy');
-        if(elWill) elWill.innerText = userStats.willpower;
-        if(elJoy) elJoy.innerText = userStats.joy;
-    }
-    
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        if(t) {
-            t.innerText = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2000);
-        } else {
-            alert(msg);
-        }
+
+    function renderStats() {
+        const w = document.getElementById('statWill');
+        const j = document.getElementById('statJoy');
+        if (w) w.innerText = userStats.willpower || 0;
+        if (j) j.innerText = userStats.joy || 0;
     }
 
-    function incrementStat(type) {
-        if (type === 'willpower') { userStats.willpower++; showToast("💪 意志力 +1"); } 
-        else if (type === 'joy') { userStats.joy++; showToast("✨ 小确幸 +1"); }
-        updateStatsUI(); save();
+    function incStat(type) {
+        if (!userStats[type] && userStats[type] !== 0) userStats[type] = 0;
+        userStats[type]++;
+        saveData();
+        renderStats();
+        if (type === 'willpower') showToast("🛡️ 记下这次「忍住」");
+        if (type === 'joy') showToast("✨ 小小的幸福也很重要");
     }
 
-    function checkLogExpiry() {
-        const today = new Date().toDateString();
-        const validLogs = dailyLog.filter(log => log.date === today);
-        if (validLogs.length !== dailyLog.length) { dailyLog = validLogs; save(); }
+    function clearDailyLog() {
+        openModal("确定要清空「今日足迹」吗？此操作不可恢复。", [
+            { label: "取消" },
+            { label: "清空", primary: true, onClick: () => {
+                const todayStr = new Date().toDateString();
+                dailyLog = dailyLog.filter(l => {
+                    const d = new Date(l.time);
+                    return d.toDateString() !== todayStr;
+                });
+                saveData();
+                renderLog();
+                showToast("已清空今日足迹");
+            }}
+        ]);
     }
-    
-    function parseTimeFromInput(str) {
-        let detectedTime = null; let cleanStr = str;
-        const regexH = /(\d+(?:\.\d+)?)\s*(h|hr|hour|hours|小时)/i;
-        let matchH = str.match(regexH);
-        if (matchH) { detectedTime = parseFloat(matchH[1]) * 60; cleanStr = cleanStr.replace(matchH[0], '').trim(); }
-        if (!detectedTime) {
-            const regexM = /(\d+)\s*(m|min|mins|分|分钟)/i;
-            let matchM = str.match(regexM);
-            if (matchM) { detectedTime = parseInt(matchM[1]); cleanStr = cleanStr.replace(matchM[0], '').trim(); }
+
+    function removeItem(id) {
+        db = db.filter(x => x.id !== id);
+        saveData();
+        renderList();
+        showToast("已删除任务");
+    }
+
+    function finishDirectly(id) {
+        const item = db.find(x => x.id === id);
+        if (!item) return;
+        currentTask = item;
+        finishTask();
+    }
+
+    function doExport() {
+        const box = document.getElementById('exportBox');
+        if (!box) return;
+        const payload = {
+            db,
+            archive,
+            dailyLog,
+            userStats
+        };
+        box.value = JSON.stringify(payload, null, 2);
+    }
+
+    function doImport() {
+        const box = document.getElementById('importBox');
+        if (!box) return;
+        let incoming;
+        try {
+            incoming = JSON.parse(box.value);
+        } catch(e) {
+            showToast("导入失败：JSON 格式不正确");
+            return;
         }
-        return { time: detectedTime, title: cleanStr };
+        if (!incoming) return;
+        const newDB = Array.isArray(incoming.db) ? incoming.db : [];
+        const newArc = Array.isArray(incoming.archive) ? incoming.archive : [];
+        const newLog = Array.isArray(incoming.dailyLog) ? incoming.dailyLog : [];
+        const newStats = incoming.userStats || {};
+        const maxId = db.reduce((m, x) => Math.max(m, x.id || 0), 0);
+        let nextId = maxId + 1;
+        newDB.forEach(item => {
+            if (!item.id) { item.id = nextId++; }
+            const exists = db.some(x => x.id === item.id || x.title === item.title);
+            if (!exists) db.push(item);
+        });
+        archive = archive.concat(newArc);
+        dailyLog = dailyLog.concat(newLog);
+        userStats.willpower = (userStats.willpower || 0) + (newStats.willpower || 0);
+        userStats.joy = (userStats.joy || 0) + (newStats.joy || 0);
+        saveData();
+        renderList();
+        renderArchive();
+        renderLog();
+        renderStats();
+        doExport();
+        showToast("已合并导入数据");
+    }
+
+    function resetAll() {
+        openModal("⚠️ 确定要清空所有本地数据吗？包括任务池、足迹、荣誉殿堂与计数器。此操作不可恢复。", [
+            { label:"取消" },
+            { label:"清空", primary:true, onClick: () => {
+                db = [];
+                archive = [];
+                dailyLog = [];
+                userStats = { willpower: 0, joy: 0 };
+                saveData();
+                renderList();
+                renderArchive();
+                renderLog();
+                renderStats();
+                doExport();
+                showToast("已清空所有数据");
+            }}
+        ]);
     }
 
     function getSmartIcon(item) {
-        if (item.subtype === 'book') return '📚';
-        if (item.subtype === 'movie') return '🎬';
+        if (!item) return "🎁";
+        if (item.type === 'vinyl') return "💿";
+        if (item.type === 'sport') return "🏃";
+        if (item.type === 'sos') return item.icon || "🚑";
         if (item.type === 'culture') {
             const t = (item.title || "").toLowerCase();
             if (t.includes('书') || t.includes('读') || t.includes('阅') || t.includes('杂志') || t.includes('周刊')) return '📚';
@@ -565,10 +1221,201 @@
         return "去行动吧！";
     }
 
+    // --- 🎰 扭蛋机：根据任务选择胶囊颜色 ---
+    function getCapsuleSrc(task) {
+        if (!task || task.type === 'sos') return null;
+
+        // 青蛙任务优先
+        if (task.isFrog) return "gacha-ball-white.png";
+        // 闪电速办
+        if (task.isQuick) return "gacha-ball-yellow.png";
+
+        // 唱片
+        if (task.type === 'vinyl') return "gacha-ball-orange.png";
+
+        // 文化类：区分电影 / 读书
+        if (task.type === 'culture') {
+            const t = (task.title || "");
+            if (t.includes("电影") || t.includes("纪录片") || t.includes("剧") || t.includes("影") || t.includes("片")) {
+                return "gacha-ball-blue.png"; // 电影
+            } else {
+                return "gacha-ball-pink.png"; // 读书
+            }
+        }
+
+        // 运动
+        if (task.type === 'sport') return "gacha-ball-green.png";
+
+        // 其他日常
+        return "gacha-ball-purple.png";
+    }
+
+    let gachaAnimating = false;
+
+    // 扭蛋机动画主流程
+    function playGachaAnimation(result) {
+        const layer  = document.getElementById('gachaLayer');
+        const eggOut = document.getElementById('eggOut');
+        const img    = document.getElementById('gachaImg');
+        const card   = document.getElementById('resultCard');
+        const placeholder = document.getElementById('placeholder');
+        const btnMain = document.getElementById('mainBtn');
+
+        // 如果扭蛋层不存在（例如图片还没准备好），直接回退到普通卡片展示
+        if (!layer || !eggOut || !img) {
+            renderResultCard(result);
+            if (btnMain) { btnMain.disabled = false; btnMain.innerText = "抽取任务"; }
+            gachaAnimating = false;
+            return;
+        }
+
+        gachaAnimating = true;
+        if (btnMain) { btnMain.disabled = true; btnMain.innerText = "抽取中…"; }
+        if (placeholder) placeholder.style.display = "none";
+        if (card) card.style.display = "none";
+
+        layer.style.display = "flex";
+        layer.style.opacity = "1";
+        img.style.opacity   = "1";
+
+        const src = getCapsuleSrc(result) || "gacha-ball-pink.png";
+        eggOut.src = src;
+        eggOut.style.opacity = 0;
+        eggOut.style.transition = "none";
+
+        eggOut.style.animation = "none";
+        img.classList.remove("machine-shake");
+        void eggOut.offsetWidth; // 重置动画
+
+        // 1）机台轻微晃动
+        setTimeout(() => {
+            img.classList.add("machine-shake");
+        }, 80);
+
+        // 2）彩蛋从出口 → 中间飞行 + 变大
+        setTimeout(() => {
+            eggOut.style.animation = "eggFly 1.1s ease-out forwards";
+        }, 260);
+
+        // 3）飞行中段开始，机台慢慢淡出
+        setTimeout(() => {
+            img.style.opacity = "0";
+        }, 700);
+
+        // 4）球已经到了中间位置：锁定 → 炸开 → 同时纸条展开 & 扭蛋层淡出
+        setTimeout(() => {
+            // 锁定球在中间
+            eggOut.style.animation = "none";
+            eggOut.style.left   = "50%";
+            eggOut.style.bottom = "44%";
+            eggOut.style.transform = "translateX(-50%) scale(1.25)";
+            void eggOut.offsetWidth;
+
+            // 球炸开
+            eggOut.style.animation = "eggBurst 0.4s ease-out forwards";
+
+            // 展示结果卡片
+            renderResultCard(result);
+
+            // 扭蛋层淡出（避免盖在上面发灰）
+            layer.style.transition = "opacity 0.25s ease-out";
+            layer.style.opacity = "0";
+        }, 1350);
+
+        // 5）动画收尾，恢复按钮 & 状态
+        setTimeout(() => {
+            layer.style.display = "none";
+            layer.style.opacity = "1";
+            img.classList.remove("machine-shake");
+            img.style.opacity = "1";
+            eggOut.style.animation = "none";
+
+            if (btnMain) {
+                btnMain.disabled = false;
+                btnMain.innerText = "抽取任务";
+            }
+            gachaAnimating = false;
+        }, 2000);
+    }
+
+    // 抽取结果卡片渲染（供普通模式 & 扭蛋动画调用）
+    function renderResultCard(result) {
+        if (!result) return;
+
+        const card = document.getElementById('resultCard');
+        const badgeEl = document.getElementById('rBadge');
+        const titleEl = document.getElementById('rTitle');
+        const descEl  = document.getElementById('rDesc');
+        const iconEl  = document.getElementById('rIcon');
+        const timeEl  = document.getElementById('rTime');
+        const btnFinish = document.getElementById('btnFinish');
+        const placeholder = document.getElementById('placeholder');
+
+        if (placeholder) placeholder.style.display = "none";
+
+        titleEl.innerText = result.title || "";
+
+        let badgesHtml = "";
+        if (result.isFrog) badgesHtml += `<span class='card-badge bg-frog'>🐸 青蛙</span>`;
+        if (result.isQuick) badgesHtml += `<span class='card-badge bg-flash'>⚡️ 速办</span>`;
+        if (result.recurrence === 'daily') badgesHtml += `<span class='card-badge bg-cycle'>🔄 每日</span>`;
+        if (badgeEl) badgeEl.innerHTML = badgesHtml;
+
+        let displayDesc = result.desc;
+        if (!displayDesc || displayDesc === "自定义") displayDesc = getDescByType(result.type);
+        if (descEl) descEl.innerText = displayDesc || "";
+
+        if (iconEl) iconEl.innerText = result.icon || getSmartIcon(result);
+
+        let timeStr = "";
+        if (result.type === 'sos') timeStr = "⚡️ 即时";
+        else if (result.time === 0) timeStr = "⏳ 丰俭由人";
+        else timeStr = `⏱️ ${result.time || 30} min`;
+        if (timeEl) timeEl.innerText = timeStr;
+
+        if (btnFinish) {
+            btnFinish.disabled = (result.type === 'sos');
+            btnFinish.innerText = (result.type === 'sos') ? "我做完了" : "去完成";
+        }
+
+        if (card) card.style.display = 'block';
+    }
+
     function handleEnter(e) { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addNew(); } }
-    function setMode(m) { mode = m; document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active')); const map = { 'normal':0, 'culture':1, 'vinyl':2, 'sos':3 }; if(map[m] !== undefined) document.querySelectorAll('.mode-tab')[map[m]].classList.add('active'); const filter = document.getElementById('filterSec'); const display = document.getElementById('displaySec'); const normCtl = document.getElementById('controls-normal'); const sosCtl = document.getElementById('controls-sos'); const btn = document.getElementById('mainBtn'); if(m === 'sos') { filter.style.background = 'var(--bg-sos)'; display.style.background = '#F3E5F5'; normCtl.style.display = 'none'; sosCtl.style.display = 'flex'; btn.innerText = "🚑 救救我"; btn.style.background = "#957DAD"; } else { filter.style.background = 'var(--bg-blue)'; display.style.background = 'var(--bg-pink)'; normCtl.style.display = 'flex'; sosCtl.style.display = 'none'; btn.style.background = "#FF9AA2"; if(m === 'vinyl') btn.innerText = "🎵 挑唱片"; else if(m === 'culture') btn.innerText = "🎬 精神食粮"; else btn.innerText = "🔮 帮我选 (混合)"; } }
+
+    function setMode(m) {
+        mode = m;
+        const display = document.getElementById('displaySec');
+        const normCtl = document.getElementById('controls-normal');
+        const sosCtl = document.getElementById('controls-sos');
+        const btnMix = document.getElementById('mode-mix');
+        const btnCult = document.getElementById('mode-culture');
+        const btnVinyl = document.getElementById('mode-vinyl');
+        const btnSport = document.getElementById('mode-sport');
+        const btnSos = document.getElementById('mode-sos');
+        [btnMix,btnCult,btnVinyl,btnSport,btnSos].forEach(b => { if (!b) return; b.classList.remove('active'); });
+        if (m === 'mix') btnMix.classList.add('active');
+        if (m === 'culture') btnCult.classList.add('active');
+        if (m === 'vinyl') btnVinyl.classList.add('active');
+        if (m === 'sport') btnSport.classList.add('active');
+        if (m === 'sos') btnSos.classList.add('active');
+
+        if (m === 'sos') {
+            normCtl.style.display = 'none';
+            sosCtl.style.display = 'flex';
+        } else {
+            normCtl.style.display = 'flex';
+            sosCtl.style.display = 'none';
+        }
+        const btn = document.getElementById('mainBtn');
+        if (mode === 'sos') btn.innerText = "🚑 救救我";
+        else if (mode === 'vinyl') btn.innerText = "💿 来一张";
+        else if (mode === 'culture') btn.innerText = "🎬 精神食粮";
+        else btn.innerText = "🔮 帮我选 (混合)";
+    }
     
     function draw() {
+        if (typeof gachaAnimating !== 'undefined' && gachaAnimating && mode !== 'sos') return;
         const card = document.getElementById('resultCard'); card.style.display = 'none';
         setTimeout(() => {
             let result = null;
@@ -583,7 +1430,7 @@
                     if (mode === 'vinyl') return item.type === 'vinyl'; if (mode === 'culture') return item.type === 'culture';
                     if (item.type === 'culture' || item.type === 'vinyl') { if (ctx === 'outdoor') return false; } 
                     else if (item.type === 'sport') { return true; } 
-                    else { if (ctx === 'desktop') return item.type !== 'outdoor'; if (ctx === 'indoor') return item.type === 'indoor'; if (ctx === 'outdoor') return item.type === 'outdoor'; }
+                    else { if (ctx === 'desktop') return item.type === 'desktop' || item.type === 'indoor'; if (ctx === 'outdoor') return item.type === 'outdoor'; }
                     return true;
                 });
                 if (validPool.length > 0) {
@@ -593,23 +1440,25 @@
             }
             currentTask = result;
             if (result) {
-                document.getElementById('rTitle').innerText = result.title;
-                let badgesHtml = "";
-                if (result.isFrog) badgesHtml += `<span class='card-badge bg-frog'>🐸 青蛙</span>`;
-                if (result.isQuick) badgesHtml += `<span class='card-badge bg-flash'>⚡️ 速办</span>`;
-                if (result.recurrence === 'daily') badgesHtml += `<span class='card-badge bg-cycle'>🔄 每日</span>`;
-                document.getElementById('rBadge').innerHTML = badgesHtml;
-                let displayDesc = result.desc;
-                if (!displayDesc || displayDesc === "自定义") displayDesc = getDescByType(result.type);
-                document.getElementById('rDesc').innerText = displayDesc;
-                document.getElementById('rIcon').innerText = result.icon || getSmartIcon(result);
-                let timeStr = "";
-                if (result.type === 'sos') timeStr = "⚡️ 即时"; else if(result.time === 0) timeStr = "⏳ 丰俭由人"; else timeStr = `⏱️ ${result.time || 30} min`;
-                document.getElementById('rTime').innerText = timeStr;
+                if (result.type === 'sos') {
+                    // SOS 模式：直接展示卡片，不经过扭蛋机
+                    renderResultCard(result);
+                } else {
+                    // 其他模式：走扭蛋机动画
+                    playGachaAnimation(result);
+                }
             } else {
-                currentTask = null; document.getElementById('rTitle').innerText = "暂无任务"; document.getElementById('rBadge').innerHTML = ""; document.getElementById('rDesc').innerText = "休息一下？"; document.getElementById('rIcon').innerText = "🌙"; document.getElementById('rTime').innerText = "";
+                // 没有可抽的任务时的占位卡片
+                currentTask = null;
+                const placeholder = document.getElementById('placeholder');
+                if (placeholder) placeholder.style.display = "none";
+                document.getElementById('rTitle').innerText = "暂无任务";
+                document.getElementById('rBadge').innerHTML = "";
+                document.getElementById('rDesc').innerText = "休息一下？";
+                document.getElementById('rIcon').innerText = "🌙";
+                document.getElementById('rTime').innerText = "";
+                card.style.display = 'block';
             }
-            card.style.display = 'block';
         }, 300);
     }
 
@@ -618,30 +1467,35 @@
         if (currentTask.type === 'sos') { showToast("状态重启！🌱"); document.getElementById('resultCard').style.display = 'none'; return; }
         // Log logic
         const now = new Date();
-        const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-        dailyLog.unshift({ title: currentTask.title, icon: currentTask.icon || getSmartIcon(currentTask), timeStr: timeStr, date: now.toDateString() });
-        
+        const timeStr = now.getTime();
+        dailyLog.push({ title: currentTask.title, time: timeStr });
         if (currentTask.recurrence === 'daily') {
-            const taskIndex = db.findIndex(t => t.id === currentTask.id);
-            if (taskIndex > -1) db[taskIndex].lastDone = new Date().toDateString();
-            renderLog(); save(); renderList(); showToast("✅ 今日打卡成功！");
-        } else if (currentTask.type === 'culture') {
-            if (currentTask.isSeries) { showToast("🎉 记录完成！"); }
-            else if(confirm(`《${currentTask.title}》彻底看完了吗？\n[确定]=归档 [取消]=稍后继续`)) {
-                db = db.filter(i => i.id !== currentTask.id);
-                archive.unshift({ ...currentTask, finishDate: new Date().toLocaleDateString() });
-                save(); renderList(); renderArchive(); showToast("🏆 已归档");
-            }
+            currentTask.lastDone = now.toDateString();
+            db = db.map(item => item.id === currentTask.id ? currentTask : item);
         } else {
-            db = db.filter(i => i.id !== currentTask.id); save(); renderList(); showToast("✨ 完成！");
+            db = db.filter(item => item.id !== currentTask.id);
         }
+        if (currentTask.type === 'culture' || currentTask.type === 'vinyl' || currentTask.isFrog) {
+            archive.push({ title: currentTask.title, doneAt: now.getTime() });
+        }
+        saveData();
+        renderList();
+        renderArchive();
         renderLog();
+        showToast("已记录完成 ✅");
         document.getElementById('resultCard').style.display = 'none';
+        currentTask = null;
     }
-    
-    function recordLog() { renderLog(); } // Alias
 
-    function autoTag() {
+    function parseTimeFromInput(text) {
+        const match = text.match(/(\\d+)(分钟|min|min|分钟内)?/);
+        if (!match) return { time:null, clean:text };
+        const t = parseInt(match[1]);
+        const clean = text.replace(match[0], '').trim();
+        return { time:t, clean };
+    }
+
+    function autoDetectTypeAndTime() {
         const raw = document.getElementById('inpTitle').value;
         const lines = raw.split('\n'); let targetLine = lines[0] || ""; 
         const parsed = parseTimeFromInput(targetLine);
@@ -651,82 +1505,96 @@
         const v = targetLine; const tags = document.querySelectorAll('.tag');
         let t = null; let detectQuick = false;
         if (/(洗|刷|发|联系|通知|拿|取|拆|装|擦|扫|倒|收|理|整理|收拾|浇|喂|剪|充|拖|换|叠|铺|挂|扔|喝)/.test(v)) { t = 'indoor'; detectQuick = true; } 
-        else if(v.includes('唱') || v.includes('听')) t = 'vinyl'; else if(v.includes('书') || v.includes('影') || v.includes('读') || v.includes('看') || v.includes('杂志')) t = 'culture'; else if(v.includes('动') || v.includes('跑') || v.includes('练') || v.includes('跳') || v.includes('球') || v.includes('舞') || v.includes('操')) t = 'sport'; else if(v.includes('买') || v.includes('外') || v.includes('取') || v.includes('拿')) t = 'outdoor'; else if(v.includes('脑') || v.includes('写') || v.includes('研究') || v.includes('作') || v.includes('编辑')) t = 'desktop';
-        if (t) { tags.forEach(tag => tag.classList.remove('active')); const activeTag = document.querySelector(`.tag[data-v="${t}"]`); activeTag.classList.add('active'); toggleTimeInput(t); }
+        else if(v.includes('唱') || v.includes('听')) t = 'vinyl';
+        else if(v.includes('跑') || v.includes('走') || v.includes('瑜伽') || v.includes('拉伸') || v.includes('散步')) t = 'sport';
+        else if(v.includes('书') || v.includes('读') || v.includes('影') || v.includes('视') || v.includes('剧') || v.includes('片')) t = 'culture';
+        else if(v.includes('桌') || v.includes('电脑') || v.includes('写作') || v.includes('写') || v.includes('剪辑') || v.includes('研究') || v.includes('作') || v.includes('编辑')) t = 'desktop';
+        if (t) { tags.forEach(tag => tag.classList.remove('active')); const activeTag = document.querySelector(`.tag[data-v="${t}"]`); if(activeTag) activeTag.classList.add('active'); toggleTimeInput(t); }
         if (detectQuick && !switchState.flash) { toggleSwitch('flash', true); document.getElementById('inpTime').value = "5"; }
     }
-    function pickTag(el) { document.querySelectorAll('.tag').forEach(t => t.classList.remove('active')); el.classList.add('active'); toggleTimeInput(el.dataset.v); }
-    function toggleTimeInput(type) { const sel = document.getElementById('inpTime'); if (type === 'vinyl' || type === 'culture') sel.classList.add('disabled'); else sel.classList.remove('disabled'); }
-    function toggleSwitch(type, forceState) { const newState = (forceState !== undefined) ? forceState : !switchState[type]; switchState[type] = newState; const sw = document.getElementById(type + 'Switch'); const activeClass = (type === 'cycle') ? 'active-cycle' : 'active-flash'; if (newState) sw.classList.add(activeClass); else sw.classList.remove(activeClass); }
-    function toggleCycle() { isCycleActive = !isCycleActive; const sw = document.getElementById('cycleSwitch'); if (isCycleActive) sw.classList.add('active'); else sw.classList.remove('active'); }
-    
-    // 🔥 修复版 addNew：补全了每日关键词检测逻辑
+
+    function pickTag(el) { document.querySelectorAll('.tag').forEach(t=>t.classList.remove('active')); el.classList.add('active'); toggleTimeInput(el.dataset.v); }
+
+    function toggleTimeInput(type) { const sel = document.getElementById('inpTime'); if (type === 'vinyl' || type === 'culture') sel.value = 60; else sel.value = 30; }
+
+    function toggleSwitch(name, forceState) {
+        const sw = document.getElementById('switch-' + name);
+        if (!sw) return;
+        const dot = sw.querySelector('.switch-dot');
+        const label = sw.querySelector('.switch-label');
+        const active = (forceState !== undefined) ? forceState : !switchState[name];
+        switchState[name] = active;
+        if (active) {
+            sw.classList.add('active');
+            label.style.color = '#333';
+        } else {
+            sw.classList.remove('active');
+            label.style.color = '#555';
+        }
+        if (name === 'cycle') isCycleActive = active;
+    }
+
     function addNew() {
-        const rawInput = document.getElementById('inpTitle').value; if(!rawInput || rawInput.trim() === "") return;
-        let lines = rawInput.split('\n').filter(line => line.trim() !== ""); const type = document.querySelector('.tag.active').dataset.v; let addedCount = 0; let batchSubtype = ''; 
-        if (lines.length > 0) { const first = lines[0].toLowerCase(); const isCleaning = /(理|整理|收拾|擦|扫|拖|洗|换|叠|铺|挂|扔|拆|装|喝)/.test(first); if (!isCleaning) { if (['看', '影', '视', '剧', '片', 'movie'].some(k => first.includes(k))) batchSubtype = 'movie'; else if (['读', '书', '阅', 'book', 'read', '杂志'].some(k => first.includes(k))) batchSubtype = 'book'; if (batchSubtype && first.length <= 4) lines.shift(); } }
-        lines.forEach(line => {
-            const parsed = parseTimeFromInput(line); let title = parsed.title; let timeVal = parsed.time; let subtype = batchSubtype;
-            let isFrog = false; if (title.startsWith('*') || title.startsWith('＊')) { isFrog = true; title = title.substring(1).trim(); }
-            let isQuick = switchState.flash; if (!isQuick) { if (/(洗|刷|发|联系|通知|拿|取|拆|装|擦|扫|倒|收|理|整理|收拾|浇|喂|剪|充|拖|换|叠|铺|挂|扔|喝)/.test(title)) isQuick = true; if (timeVal && timeVal <= 5) isQuick = true; }
-            if (!timeVal) { timeVal = parseInt(document.getElementById('inpTime').value); if (type === 'vinyl' && !isQuick) timeVal = 0; else if (type === 'culture' && !isQuick) { if (subtype === 'movie') timeVal = 120; else timeVal = 0; } }
-            if (isQuick && (!timeVal || timeVal > 15)) timeVal = 5;
-            if (!isQuick && !subtype && type === 'culture') { if (title.includes('影') || title.includes('视') || title.includes('剧') || title.includes('片') || title.includes('看')) subtype = 'movie'; else if (title.includes('书') || title.includes('读') || title.includes('阅') || title.includes('杂志') || title.includes('周刊')) subtype = 'book'; }
-            title = title.replace(/^(去|看|读|听|写|做)\s*/, '').trim();
-            if (!isQuick && (type === 'culture' || type === 'vinyl')) { if (!title.startsWith('《') && !title.endsWith('》')) title = `《${title}》`; }
-            let isSeries = false; if (type === 'culture') { if (title.includes('杂志') || title.includes('周刊') || title.includes('系列') || title.includes('全集')) isSeries = true; }
-            
-            // 🔥 FIX: 每日循环强制检测
-            let recurrence = switchState.cycle ? 'daily' : 'none'; 
-            if (recurrence === 'none' && (title.includes('每天') || title.includes('每日'))) { recurrence = 'daily'; }
-            if (recurrence === 'daily') title = title.replace(/每天|每日/g, '').trim();
-
-            db.push({ id: Date.now() + Math.floor(Math.random() * 10000), title: title, type: type, subtype: subtype, desc: isSeries ? "系列" : (recurrence === 'daily' ? "每日任务" : ""), isSeries: isSeries, time: timeVal, recurrence: recurrence, isFrog: isFrog, isQuick: isQuick, lastDone: '' }); addedCount++;
-        });
-        save(); renderList(); const input = document.getElementById('inpTitle'); input.value = ''; input.placeholder = "✅ 存入成功！"; document.getElementById('timeFeedback').innerText = ""; if(switchState.cycle) toggleSwitch('cycle', false); if(switchState.flash) toggleSwitch('flash', false); showToast(`🎉 存入 ${addedCount} 个任务！`); setTimeout(() => input.placeholder = "输入事项...", 1500);
-    }
-    
-    function tryDeleteItem(id) { if(confirm("确定删除吗？")) { db = db.filter(item => item.id !== id); save(); renderList(); showToast("🗑️ 已删除"); } }
-    function tryResetAll() { if(confirm("⚠️ 确定清空？")) { db = []; archive = []; dailyLog = []; userStats = { willpower: 0, joy: 0 }; save(); renderList(); renderArchive(); renderLog(); updateStatsUI(); showToast("已格式化"); } }
-
-    // --- 导入逻辑 ---
-    function executeImport() {
-        const str = document.getElementById('dataArea').value;
-        if (!str || str.trim().length === 0) { alert("⚠️ 请先粘贴代码！"); return; }
-        try {
-            const json = JSON.parse(str);
-            let incomingDB = json.db || (Array.isArray(json) ? json : []);
-            let incomingArchive = json.archive || [];
-            let incomingStats = json.userStats || {};
-            if (!Array.isArray(incomingDB)) throw new Error("格式错误");
-            if(confirm(`📡 找到 ${incomingDB.length} 个任务。\n\n确定要合并吗？`)) {
-                 let addCount = 0;
-                 incomingDB.forEach(newItem => {
-                    const exists = db.some(e => e.title === newItem.title && e.type === newItem.type);
-                    if (!exists) { newItem.id = Date.now() + Math.floor(Math.random()*10000); if (newItem.time === undefined) newItem.time = 30; db.push(newItem); addCount++; }
-                 });
-                 incomingArchive.forEach(newArc => { const arcExists = archive.some(a => a.title === newArc.title); if(!arcExists) archive.unshift(newArc); });
-                 if (incomingStats.willpower) userStats.willpower = Math.max(userStats.willpower, incomingStats.willpower);
-                 if (incomingStats.joy) userStats.joy = Math.max(userStats.joy, incomingStats.joy);
-                 save(); renderList(); renderArchive(); updateStatsUI();
-                 alert(`✅ 成功合并 ${addCount} 个新任务！`);
-                 document.getElementById('dataArea').value = "";
+        const raw = document.getElementById('inpTitle').value.trim();
+        if (!raw) return;
+        const lines = raw.split('\n').filter(l => l.trim().length > 0);
+        let baseType = document.querySelector('.tag.active')?.dataset.v || 'indoor';
+        const timeInput = parseInt(document.getElementById('inpTime').value) || 30;
+        const baseTime = timeInput;
+        const isFrog = switchState.frog;
+        const isQuick = switchState.flash;
+        const recurrence = switchState.cycle ? 'daily' : null;
+        let idBase = db.reduce((m,x)=>Math.max(m,x.id||0),0)+1;
+        let firstLine = lines[0];
+        if (firstLine.match(/^(看|读|阅读|剧|影|片)/)) baseType = 'culture';
+        let itemsToAdd = [];
+        lines.forEach((ln, idx) => {
+            let line = ln.trim();
+            if (!line) return;
+            const parsed = parseTimeFromInput(line);
+            let t = parsed.time || baseTime;
+            const cleanTitle = parsed.clean || line;
+            let finalType = baseType;
+            const v = cleanTitle;
+            if (/(洗|刷|发|联系|通知|拿|取|拆|装|擦|扫|倒|收|理|整理|收拾|浇|喂|剪|充|拖|换|叠|铺|挂|扔|喝)/.test(v)) finalType = 'indoor';
+            else if(v.includes('唱') || v.includes('听')) finalType = 'vinyl';
+            else if(v.includes('跑') || v.includes('走') || v.includes('瑜伽') || v.includes('拉伸') || v.includes('散步')) finalType = 'sport';
+            else if(v.includes('书') || v.includes('读') || v.includes('影') || v.includes('视') || v.includes('剧') || v.includes('片')) finalType = 'culture';
+            else if(v.includes('桌') || v.includes('电脑') || v.includes('写作') || v.includes('写') || v.includes('剪辑') || v.includes('研究') || v.includes('作') || v.includes('编辑')) finalType = 'desktop';
+            if (finalType === 'culture') {
+                let title = cleanTitle;
+                if (!title.startsWith('《')) title = '《' + title;
+                if (!title.endsWith('》')) title = title + '》';
+                itemsToAdd.push({
+                    id: idBase++,
+                    title,
+                    type: finalType,
+                    time: t,
+                    isFrog,
+                    isQuick,
+                    recurrence
+                });
+            } else {
+                itemsToAdd.push({
+                    id: idBase++,
+                    title: cleanTitle,
+                    type: finalType,
+                    time: t,
+                    isFrog,
+                    isQuick,
+                    recurrence
+                });
             }
-        } catch(e) { alert(`❌ 导入失败：${e.message}`); }
-    }
-    function triggerImport() { document.getElementById('fileInput').click(); }
-    function importFromFile(input) { const file = input.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = function(e) { document.getElementById('dataArea').value = e.target.result; executeImport(); }; reader.readAsText(file); }
-    function exportToFile() { const allData = { db, archive, dailyLog, userStats }; const blob = new Blob([JSON.stringify(allData, null, 2)], {type: "application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "anchor_backup_" + new Date().toISOString().slice(0,10) + ".json"; a.click(); }
-    function copyToClip() { const str = JSON.stringify({ db, archive, dailyLog, userStats }); if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(str).then(()=> alert("✅ 已复制")).catch(()=>{ document.getElementById('dataArea').value=str; alert("⚠️ 自动复制失败，请手动全选复制"); }); } else { document.getElementById('dataArea').value=str; alert("⚠️ 请手动全选复制"); } }
-    /* --- 修复列表展开/收起 --- */
-    function toggleList(id) {
-        const list = document.getElementById(id);
-        if (!list) return;
-
-        // 切换 CSS 的 open 开关
-        list.classList.toggle("open");
+        });
+        db = db.concat(itemsToAdd);
+        saveData();
+        renderList();
+        document.getElementById('inpTitle').value = "";
+        document.getElementById('timeFeedback').innerText = "";
+        showToast(`已加入 ${itemsToAdd.length} 条任务`);
     }
 
+    window.onload = loadData;
 </script>
 </body>
 </html>
