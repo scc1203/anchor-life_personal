@@ -67,17 +67,29 @@
             border-bottom: 1px solid #eee;
         }
         .stat-btn {
-            flex: 1;
-            margin: 0 5px;
-            padding: 8px;
-            border-radius: 14px;
-            cursor: pointer;
-            background: #F3FBF7; /* 更柔和的马卡龙绿色背景，降低存在感 */
-            border: 1px solid rgba(198, 231, 216, 0.6); /* 描边更柔和，不抢主舞台 */
-            text-align: center;
-            transition: all 0.1s;
-            user-select: none;
-        }
+    flex: 1;
+    margin: 0 5px;
+    padding: 8px;
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.1s;
+    user-select: none;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.stat-btn.willpower {
+    background: #F3FBF7;  /* 薄荷绿 */
+    color: #2E7D32;
+}
+
+.stat-btn.joy {
+    background: #FFF5EB;  /* 奶桃色 */
+    color: #BF6A2F;       /* 柔和一点的橙棕色文字 */
+}
+
+
+
         .stat-btn:active {
             transform: scale(0.96);
             background: #E5F4ED;
@@ -871,7 +883,7 @@
     </div>
 <!-- 设置 & 备份 -->
     <div class="section-settings" id="settingSec">
-        <details open>
+        <details>
             <summary>📡 数据方舟 (Offline)</summary>
             <div class="manual-content">
         <div style="font-size:0.8rem; color:#1565C0; margin-bottom:5px; font-weight:bold;">📂 文件备份 (电脑端推荐)</div>
