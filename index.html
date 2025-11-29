@@ -1655,6 +1655,14 @@
             vinylTag.style.display = (APP_VARIANT === 'common') ? 'none' : '';
         }
     }
+/* --- 页面载入后自动选择筛选默认值 --- */
+document.addEventListener("DOMContentLoaded", function() {
+    const ctx = document.getElementById("selContext");
+    const time = document.getElementById("selTime");
+    if (ctx) ctx.value = "desktop";  // 书桌前
+    if (time) time.value = "120";    // 2小时+
+});
+
 
 </script>
 </body>
