@@ -1003,7 +1003,7 @@
         renderList(); renderArchive(); renderLog(); renderHistory(); updateStatsUI(); 
         setMode('normal');
         if (!localStorage.getItem(KEY_VISITED)) {
-            alert("👋 欢迎来到 Anchor v5.3（personal）！\n\n🆕 最近更新：\n- 新增“正在进行中…” 动效\n- 新增 30 天历史记录\n- 重要任务支持「* / ! / “重要”+空格」开启");
+            alert("👋 欢迎来到 Anchor v5.3（personal）！\n\n🆕 最近更新：\n- 新增“正在进行中…” 动效\n- 新增 30 天历史记录\n- 重要任务支持「* / ! / “重要”+空格」添加");
             localStorage.setItem(KEY_VISITED, 'true');
         }
         applyVariant();
