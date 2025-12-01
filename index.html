@@ -641,6 +641,26 @@
             color: #555;
             margin-bottom: 4px;
         }
+/* === 根据 APP_VARIANT 切换 意志力 / 小确幸 配色 === */
+
+/* personal：一绿一桃（你现在这版的感觉） */
+body.variant-personal .stat-btn.willpower {
+    background: #F3FBF7;
+    color: #2E7D32;
+}
+
+body.variant-personal .stat-btn.joy {
+    background: #FFF5EB;
+    color: #BF6A2F;
+}
+
+/* common：两块都用同一款浅绿 */
+body.variant-common .stat-btn.willpower,
+body.variant-common .stat-btn.joy {
+    background: #F3FBF7;
+    color: #2E7D32;
+}
+
         .section-subtitle {
             font-size: 0.75rem;
             color: #777;
@@ -768,7 +788,7 @@
         <div class="section-title">02 · 新任务入库</div>
         <div class="input-box">
     <textarea id="inpTitle"
-      placeholder="输入事项…（支持批量输入）&#10;例：*写导言30m / 整理书桌 / 看好东西…"
+      placeholder="输入事项…（支持批量输入）&#10;例：！写导言30m / 整理书桌 / 看好东西…"
       oninput="autoTag()"
       onkeypress="handleEnter(event)"></textarea>
     <button class="btn-add" onclick="addNew()">＋</button>
@@ -884,7 +904,7 @@
                 <ul>
                     <li><b>自动书影：</b> 输入 <span class="manual-tag">看/读/书/影</span> 开头，自动归类为文化，并加书名号。</li>
                     <li><b>闪电速办：</b> 输入 <span class="manual-tag">洗/刷/理/拆/扔/喝</span> 等，自动标记为 <span class="manual-tag">⚡️速办</span> (5min)。</li>
-                    <li><b>青蛙任务：</b> 输入 <span class="manual-tag">*</span> (星号) 开头，标记为困难重要的 <span class="manual-tag">🐸青蛙</span>。</li>
+                    <li><b>青蛙任务：</b> 输入 <span class="manual-tag">*/!/"重要“+空格</span> (星号) 开头，标记为困难重要的 <span class="manual-tag">🐸青蛙</span>。</li>
                     <li><b>每日循环：</b> 输入 <span class="manual-tag">每天/每日</span>，自动开启循环。</li>
                 </ul>
                 <div class="manual-h3">🎲 抽取逻辑</div>
@@ -1003,7 +1023,7 @@
         renderList(); renderArchive(); renderLog(); renderHistory(); updateStatsUI(); 
         setMode('normal');
         if (!localStorage.getItem(KEY_VISITED)) {
-            alert("👋 欢迎来到 Anchor v5.3（personal）！\n\n🆕 最近更新：\n- 新增“正在进行中…” 动效\n- 新增 30 天历史记录\n- 重要任务支持「* / ! / “重要”+空格」添加");
+            alert("👋 欢迎来到 Anchor v5.3（personal）！\n\n🆕 最近更新：\n- 新增“正在进行中…” 动效\n- 新增 30 天历史记录\n- 重要任务支持「* / ! / “重要”+空格」开启");
             localStorage.setItem(KEY_VISITED, 'true');
         }
         applyVariant();
@@ -1931,17 +1951,24 @@ if (!userOverrideFlash) {
     }
 
     // 根据 APP_VARIANT 调整 UI（personal / common）
-    function applyVariant() {
-        if (typeof APP_VARIANT === 'undefined') return;
-        var vinylTab = document.getElementById('mode-tab-vinyl');
-        if (vinylTab) {
-            vinylTab.style.display = (APP_VARIANT === 'common') ? 'none' : '';
-        }
-        var vinylTag = document.getElementById('tag-vinyl');
-        if (vinylTag) {
-            vinylTag.style.display = (APP_VARIANT === 'common') ? 'none' : '';
-        }
+function applyVariant() {
+    if (typeof APP_VARIANT === 'undefined') return;
+
+    // 1）根据 variant 给 body 加 class，方便 CSS 区分配色
+    document.body.classList.remove('variant-personal', 'variant-common');
+    document.body.classList.add(APP_VARIANT === 'common' ? 'variant-common' : 'variant-personal');
+
+    // 2）原来的唱片入口显隐逻辑
+    var vinylTab = document.getElementById('mode-tab-vinyl');
+    if (vinylTab) {
+        vinylTab.style.display = (APP_VARIANT === 'common') ? 'none' : '';
     }
+    var vinylTag = document.getElementById('tag-vinyl');
+    if (vinylTag) {
+        vinylTag.style.display = (APP_VARIANT === 'common') ? 'none' : '';
+    }
+}
+
 /* --- 页面载入后自动选择筛选默认值 --- */
 document.addEventListener("DOMContentLoaded", function() {
     const ctx = document.getElementById("selContext");
