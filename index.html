@@ -1033,7 +1033,7 @@ body.variant-common .stat-btn.joy {
     const KEY_ARCHIVE = 'anchor_live_archive';
     const KEY_LOG = 'anchor_live_log';
     const KEY_STATS = 'anchor_live_stats';
-    const KEY_VISITED = 'anchor_has_visited_v53_personal';
+    const KEY_VISITED = 'anchor_has_visited_v54_personal';
 
     const defaultDB = [
         { id: 1, title: "听一张喜欢的黑胶", type: "vinyl", desc: "音乐时间", time: 0 },
@@ -2086,8 +2086,16 @@ if (!userOverrideFlash) {
                 }
             }
 
-            // 再把 title 规范成最终展示用样式
-            title = rawForSeries;
+                        // 再把 title 规范成最终展示用样式（这里顺手把“追 / 剧”前缀清洗掉）
+            let displayTitle = rawForSeries;
+
+            // 如果是书影类 & 被识别为剧集，就把开头的“追 / 剧”去掉
+            if (type === 'culture' && isSeries && (displayTitle.startsWith('追') || displayTitle.startsWith('剧'))) {
+                displayTitle = displayTitle.slice(1).trim();
+            }
+
+            title = displayTitle;
+
             if (!isQuick && (type === 'culture' || type === 'vinyl')) { 
                 if (title && !title.startsWith('《') && !title.endsWith('》')) {
                     title = `《${title}》`; 
