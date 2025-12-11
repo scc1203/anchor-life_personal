@@ -2005,41 +2005,66 @@ function getAllCandyTypes() {
 }
 // 捏气泡用的音效（用 Web Audio 做一个很短的小“pop”）
 let bubbleAudioCtx = null;
+let bubbleAudioUnlocked = false;
+
+// 在需要时创建 / 复用 AudioContext
+function ensureBubbleAudioContext() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!bubbleAudioCtx) {
+        bubbleAudioCtx = new AC();
+    }
+    return bubbleAudioCtx;
+}
+
+// 首次用户点击 / 触摸时，解锁移动端的音频播放权限
+function unlockBubbleAudioOnFirstGesture() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC || bubbleAudioUnlocked) return;
+
+    const handler = () => {
+        const ctx = ensureBubbleAudioContext();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') {
+            ctx.resume();
+        }
+        bubbleAudioUnlocked = true;
+        window.removeEventListener('touchstart', handler);
+        window.removeEventListener('click', handler);
+    };
+
+    window.addEventListener('touchstart', handler, { passive: true });
+    window.addEventListener('click', handler, { passive: true });
+}
+
+// 页面加载完成后，提前挂上“首触解锁”监听
+document.addEventListener('DOMContentLoaded', unlockBubbleAudioOnFirstGesture);
 
 function playBubblePopSound() {
     try {
-        const AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
+        const ctx = ensureBubbleAudioContext();
+        if (!ctx) return;
 
-        if (!bubbleAudioCtx) {
-            bubbleAudioCtx = new AC();
-        }
-        const ctx = bubbleAudioCtx;
-
-        // 真正发声的逻辑单独封装一下，方便在 resume() 后调用
         const doPlay = () => {
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
 
-            osc.frequency.value = 420; // 频率略偏高，像小“啪”
-            gain.gain.setValueAtTime(0.15, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(
-                0.001,
-                ctx.currentTime + 0.08
-            );
+            // 稍微调大一点声音 / 延长一点时间，手机上更容易听到
+            osc.frequency.value = 520 + Math.random() * 80; // 520~600Hz 左右，小小的「啪」
+            const t0 = ctx.currentTime;
+            gain.gain.setValueAtTime(0.25, t0);
+            gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.12);
 
             osc.connect(gain);
             gain.connect(ctx.destination);
 
-            osc.start();
-            osc.stop(ctx.currentTime + 0.09);
+            osc.start(t0);
+            osc.stop(t0 + 0.14);
         };
 
-        // 有些浏览器第一次需要先 resume 一下 AudioContext
         if (ctx.state === 'suspended') {
-            ctx.resume().then(doPlay).catch(() => {
-                // resume 失败就悄悄忽略，不影响页面其它功能
-            });
+            // 理论上首触已经解锁了，这里再兜底一次
+            ctx.resume().then(doPlay).catch(() => {});
         } else {
             doPlay();
         }
