@@ -2004,11 +2004,13 @@ function getAllCandyTypes() {
     return all;
 }
 // 捏气泡用的音效：使用一段外部音频文件（兼容 iOS Safari）
-const BUBBLE_POP_URL = 'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/bubble-pop-short.mp3';
+const BUBBLE_POP_URL = 'bubble-pop-short.mp3';  // 使用同目录下的本地文件
+
 
 // 预创建一个音频元素，用于反复播放
 const bubblePopAudio = new Audio(BUBBLE_POP_URL);
 bubblePopAudio.preload = 'auto';
+bubblePopAudio.volume = 1.0; // 确保音量是正常的
 
 function playBubblePopSound() {
     try {
