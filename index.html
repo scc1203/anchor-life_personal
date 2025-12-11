@@ -2003,75 +2003,26 @@ function getAllCandyTypes() {
     });
     return all;
 }
-// 捏气泡用的音效（用 Web Audio 做一个很短的小“pop”）
-let bubbleAudioCtx = null;
-let bubbleAudioUnlocked = false;
+// 捏气泡用的音效：使用一段外部音频文件（兼容 iOS Safari）
+const BUBBLE_POP_URL = 'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/bubble-pop-short.mp3';
 
-// 在需要时创建 / 复用 AudioContext
-function ensureBubbleAudioContext() {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return null;
-    if (!bubbleAudioCtx) {
-        bubbleAudioCtx = new AC();
-    }
-    return bubbleAudioCtx;
-}
-
-// 首次用户点击 / 触摸时，解锁移动端的音频播放权限
-function unlockBubbleAudioOnFirstGesture() {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC || bubbleAudioUnlocked) return;
-
-    const handler = () => {
-        const ctx = ensureBubbleAudioContext();
-        if (!ctx) return;
-        if (ctx.state === 'suspended') {
-            ctx.resume();
-        }
-        bubbleAudioUnlocked = true;
-        window.removeEventListener('touchstart', handler);
-        window.removeEventListener('click', handler);
-    };
-
-    window.addEventListener('touchstart', handler, { passive: true });
-    window.addEventListener('click', handler, { passive: true });
-}
-
-// 页面加载完成后，提前挂上“首触解锁”监听
-document.addEventListener('DOMContentLoaded', unlockBubbleAudioOnFirstGesture);
+// 预创建一个音频元素，用于反复播放
+const bubblePopAudio = new Audio(BUBBLE_POP_URL);
+bubblePopAudio.preload = 'auto';
 
 function playBubblePopSound() {
     try {
-        const ctx = ensureBubbleAudioContext();
-        if (!ctx) return;
-
-        const doPlay = () => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            // 稍微调大一点声音 / 延长一点时间，手机上更容易听到
-            osc.frequency.value = 520 + Math.random() * 80; // 520~600Hz 左右，小小的「啪」
-            const t0 = ctx.currentTime;
-            gain.gain.setValueAtTime(0.25, t0);
-            gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.12);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start(t0);
-            osc.stop(t0 + 0.14);
-        };
-
-        if (ctx.state === 'suspended') {
-            // 理论上首触已经解锁了，这里再兜底一次
-            ctx.resume().then(doPlay).catch(() => {});
-        } else {
-            doPlay();
-        }
+        // 如果当前正在播放，先从头开始
+        bubblePopAudio.currentTime = 0;
+        // 在用户点击气泡的事件中触发，符合移动端音频自动播放策略
+        bubblePopAudio.play().catch(() => {
+            // 某些环境可能仍然会拒绝播放，这里静默失败即可
+        });
     } catch (e) {
-        // 某些环境不支持 Web Audio，就静音，不影响其它逻辑
+        // 兜底：有问题就干脆不播声音，不影响其它逻辑
     }
 }
+
 
 
     // 记录累计打开天数 & 每日打卡图已弹出的日期
