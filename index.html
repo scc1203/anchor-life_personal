@@ -1971,22 +1971,22 @@ const MUSIC_CLIPS = [
         bvid: 'BV14knez5E4x'
     }
 ];
-// 每日打卡图图库：直接使用 GitHub raw 链接
+// 每日打卡图图库（相对路径，指向 daily_posters 文件夹）
 const DAILY_POSTER_IMAGES = [
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster01.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster02.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster03.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster04.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster05.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster06.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster07.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster08.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster09.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster10.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster11.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster12.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster13.jpg',
-    'https://raw.githubusercontent.com/scc1203/anchor-life_personal/main/daily_posters/poster14.jpg'
+    'daily_posters/poster01.jpg',
+    'daily_posters/poster02.jpg',
+    'daily_posters/poster03.jpg',
+    'daily_posters/poster04.jpg',
+    'daily_posters/poster05.jpg',
+    'daily_posters/poster06.jpg',
+    'daily_posters/poster07.jpg',
+    'daily_posters/poster08.jpg',
+    'daily_posters/poster09.jpg',
+    'daily_posters/poster10.jpg',
+    'daily_posters/poster11.jpg',
+    'daily_posters/poster12.jpg',
+    'daily_posters/poster13.jpg',
+    'daily_posters/poster14.jpg'
 ];
 
 // 收集所有当前可用的糖类型（去重）：用于“连续两次不能一样”的兜底逻辑
@@ -2016,22 +2016,38 @@ function playBubblePopSound() {
         }
         const ctx = bubbleAudioCtx;
 
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+        // 真正发声的逻辑单独封装一下，方便在 resume() 后调用
+        const doPlay = () => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
 
-        osc.frequency.value = 420;  // 频率略偏高，像小“啪”
-        gain.gain.setValueAtTime(0.15, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+            osc.frequency.value = 420; // 频率略偏高，像小“啪”
+            gain.gain.setValueAtTime(0.15, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                ctx.currentTime + 0.08
+            );
 
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
 
-        osc.start();
-        osc.stop(ctx.currentTime + 0.09);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.09);
+        };
+
+        // 有些浏览器第一次需要先 resume 一下 AudioContext
+        if (ctx.state === 'suspended') {
+            ctx.resume().then(doPlay).catch(() => {
+                // resume 失败就悄悄忽略，不影响页面其它功能
+            });
+        } else {
+            doPlay();
+        }
     } catch (e) {
-        // 有些环境可能不支持 Web Audio，出错就静音，不影响其它逻辑
+        // 某些环境不支持 Web Audio，就静音，不影响其它逻辑
     }
 }
+
 
     // 记录累计打开天数 & 每日打卡图已弹出的日期
     const KEY_OPENED_DAYS = 'anchor_opened_days_v56';
