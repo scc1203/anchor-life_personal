@@ -231,6 +231,23 @@
     text-decoration: underline;
 }
 
+.sound-enable-btn {
+    position: fixed;
+    right: 12px;
+    bottom: 16px;
+    z-index: 3000;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(0, 0, 0, 0.72);
+    color: #fff;
+    font-size: 11px;
+    display: none; /* 默认隐藏，只在主屏幕模式里出现 */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
 
 /* 提示文案：复用泡泡 hint 的风格 */
 .bubble-hint,
@@ -2003,28 +2020,63 @@ function getAllCandyTypes() {
     });
     return all;
 }
-// 捏气泡用的音效：使用一段外部音频文件（兼容 iOS Safari）
-const BUBBLE_POP_URL = 'bubble-pop-short.mp3';  // 使用同目录下的本地文件
-
-
-// 预创建一个音频元素，用于反复播放
+// 捏气泡用的音效：使用一段外部音频文件（兼容 iOS Safari + 主屏幕模式）
+const BUBBLE_POP_URL = 'bubble-pop-short.mp3'; // 和 index.html 同目录
 const bubblePopAudio = new Audio(BUBBLE_POP_URL);
 bubblePopAudio.preload = 'auto';
-bubblePopAudio.volume = 1.0; // 确保音量是正常的
+bubblePopAudio.volume = 1.0;
 
-function playBubblePopSound() {
-    try {
-        // 如果当前正在播放，先从头开始
-        bubblePopAudio.currentTime = 0;
-        // 在用户点击气泡的事件中触发，符合移动端音频自动播放策略
-        bubblePopAudio.play().catch(() => {
-            // 某些环境可能仍然会拒绝播放，这里静默失败即可
-        });
-    } catch (e) {
-        // 兜底：有问题就干脆不播声音，不影响其它逻辑
-    }
+let bubbleSoundUnlocked = false;
+
+// 判断是否处于「添加到主屏幕」的独立模式
+function isStandaloneMode() {
+    return (
+        (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+        window.navigator.standalone === true
+    );
 }
 
+// 初始化「开启音效」按钮逻辑
+function initBubbleSoundUnlock() {
+    const btn = document.getElementById('enableSoundBtn');
+    if (!btn) return;
+
+    if (isStandaloneMode()) {
+        // 主屏幕模式：需要用户点一次来解锁音效
+        btn.style.display = 'inline-flex';
+    } else {
+        // 普通 Safari / 桌面浏览器：直接视为已解锁，不显示按钮
+        bubbleSoundUnlocked = true;
+        btn.style.display = 'none';
+        return;
+    }
+
+    btn.addEventListener('click', () => {
+        // 主动播放一次再立刻暂停，用来“解锁”音频
+        bubblePopAudio.currentTime = 0;
+        bubblePopAudio.play().then(() => {
+            bubblePopAudio.pause();
+            bubblePopAudio.currentTime = 0;
+            bubbleSoundUnlocked = true;
+            btn.style.display = 'none';
+        }).catch(() => {
+            // 即便失败也先隐藏按钮，避免一直挡视线
+            btn.style.display = 'none';
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initBubbleSoundUnlock);
+
+function playBubblePopSound() {
+    if (!bubbleSoundUnlocked) return; // 还没解锁就不播，避免被系统静音
+    try {
+        bubblePopAudio.currentTime = 0;
+        bubblePopAudio.play().catch(() => {});
+    } catch (e) {
+        // 有问题就静默，不影响其它逻辑
+    }
+}
 
 
     // 记录累计打开天数 & 每日打卡图已弹出的日期
@@ -4473,6 +4525,9 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         </div>
     </div>
+<button id="enableSoundBtn" class="sound-enable-btn" type="button">
+    开启音效
+</button>
 
 
 </body>
