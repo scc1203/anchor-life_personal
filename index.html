@@ -2369,7 +2369,8 @@ function updateCandySoundButton(needsSound) {
     const btn = document.getElementById('candySoundBtn');
     if (!btn) return;
 
-    if (isStandaloneMode() && currentCandyNeedsSound && !soundUnlocked) {
+    // ✅ 简化逻辑：只要这颗糖需要音效，且尚未解锁，就显示按钮
+    if (currentCandyNeedsSound && !soundUnlocked) {
         btn.style.display = 'inline-flex';
     } else {
         btn.style.display = 'none';
@@ -2403,18 +2404,18 @@ async function unlockAllCandySounds() {
 function initCandySoundButton() {
     const btn = document.getElementById('candySoundBtn');
     if (!btn) return;
+
+    // 点击一次，就统一解锁所有糖果相关音效
     btn.addEventListener('click', () => {
         unlockAllCandySounds();
     });
 
-    // 非主屏幕模式：一般不会被自动播放策略卡住，直接视为已解锁
-    if (!isStandaloneMode()) {
-        soundUnlocked = true;
-        btn.style.display = 'none';
-    }
+    // ❌ 不再在这里自动解锁 / 自动隐藏按钮
+    // 我们统一由 updateCandySoundButton 按需控制显隐
 }
 
 document.addEventListener('DOMContentLoaded', initCandySoundButton);
+
 
 function playBubblePopSound() {
     // 主屏幕模式未解锁时，直接不播，避免被系统静音/报错
