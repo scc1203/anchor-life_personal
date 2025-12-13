@@ -2273,22 +2273,13 @@ const BUBBLE_POP_FALLBACK_DATA = 'data:audio/wav;base64,UklGRl4RAABXQVZFZm10IBAA
 let _candyAudioCtx = null;
 function getCandyAudioCtx() {
     try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return null;
-
-        // 如果之前没有，或者已经被系统关掉（closed），就重建一个
-        if (!_candyAudioCtx || _candyAudioCtx.state === 'closed') {
-            _candyAudioCtx = new AudioCtx();
+        if (!_candyAudioCtx) {
+            _candyAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-
-        // 如果只是暂时挂起（suspended），恢复它
         if (_candyAudioCtx.state === 'suspended') {
             _candyAudioCtx.resume().catch(() => {});
         }
-    } catch (e) {
-        // 出错时把机房清空，避免卡在坏掉的状态
-        _candyAudioCtx = null;
-    }
+    } catch (e) {}
     return _candyAudioCtx;
 }
 
@@ -2386,27 +2377,59 @@ function updateCandySoundButton(needsSound) {
     }
 }
 
-// 统一解锁：用一次用户点击手势，把相关音频都“点亮”
-async function unlockAllCandySounds() {
+// --- 修复后的解锁函数：更强硬的唤醒逻辑，防止卡死 ---
+function unlockAllCandySounds() {
     const btn = document.getElementById('candySoundBtn');
-    // 同步唤醒 WebAudio（作为兜底/补充）
-    try { getCandyAudioCtx(); } catch (e) {}
-
-    // 逐个尝试，不要因为某个失败就中断
-    try { await bubblePopAudio.play(); bubblePopAudio.pause(); bubblePopAudio.currentTime = 0; } catch (e) {
-        try {
-            bubblePopAudio.src = BUBBLE_POP_FALLBACK_DATA;
-            bubblePopAudio.load();
-            await bubblePopAudio.play();
-            bubblePopAudio.pause();
-            bubblePopAudio.currentTime = 0;
-        } catch (_) {}
-    }
-    try { await fireworkPopAudio.play(); fireworkPopAudio.pause(); fireworkPopAudio.currentTime = 0; } catch (e) {}
-    try { await starShineAudio.play(); starShineAudio.pause(); starShineAudio.currentTime = 0; } catch (e) {}
-
+    
+    // 1. 【关键】不管音频是否这就就绪，先强制标记为“已解锁”
+    // 这样能保证烟花、气泡等逻辑认为是可以发声的
     soundUnlocked = true;
+
+    // 2. 立刻隐藏按钮，并给出反馈，不再傻等
     if (btn) btn.style.display = 'none';
+    if (typeof showToast === 'function') {
+        showToast("🎵 音效引擎已启动");
+    }
+
+    // 3. 强制唤醒 WebAudio 上下文 (Kalimba/烟花主要靠这个)
+    // iOS 必须在点击事件的同步执行流中调用 resume
+    try {
+        const ctx = getCandyAudioCtx();
+        if (ctx && ctx.state === 'suspended') {
+            ctx.resume().then(() => {
+                console.log('AudioContext forced resumed.');
+            });
+        }
+    } catch (e) {
+        console.warn('AudioContext resume failed:', e);
+    }
+
+    // 4. 尝试播放一下音频文件来“热身”（Bubble pop），但不阻塞主流程
+    // 即使这里报错或卡住，也不会影响上面的 soundUnlocked = true
+    if (bubblePopAudio) {
+        // 尝试播放一瞬间然后暂停，纯粹为了骗过浏览器的静音策略
+        bubblePopAudio.volume = 0; // 先静音防止突兀
+        const playPromise = bubblePopAudio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // 播放成功后立刻暂停并恢复音量
+                bubblePopAudio.pause();
+                bubblePopAudio.currentTime = 0;
+                bubblePopAudio.volume = 1.0; 
+            }).catch(error => {
+                // 如果失败（比如文件没加载好），尝试用兜底数据再试一次
+                console.warn('First play failed, trying fallback...');
+                try {
+                    bubblePopAudio.src = BUBBLE_POP_FALLBACK_DATA;
+                    bubblePopAudio.load();
+                } catch(e){}
+            });
+        }
+    }
+    
+    // 同样尝试热身一下其他的（不强求成功）
+    try { if(fireworkPopAudio) { fireworkPopAudio.volume=0; fireworkPopAudio.play().catch(()=>{}); fireworkPopAudio.volume=1; } } catch(e){}
+    try { if(starShineAudio) { starShineAudio.volume=0; starShineAudio.play().then(()=>starShineAudio.pause()).catch(()=>{}); starShineAudio.volume=0.65; } } catch(e){}
 }
 
 // 初始化按钮点击（按钮本身常驻在 candyStage，不会被 innerHTML 清掉）
@@ -2424,25 +2447,6 @@ function initCandySoundButton() {
 }
 
 document.addEventListener('DOMContentLoaded', initCandySoundButton);
-// 当页面进入后台时，清理音频机房，并在沙盒/主屏模式下要求重新开启音效
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') {
-        // iOS 可能在后台把 AudioContext 直接关闭，这里手动关掉并清空引用
-        try {
-            if (_candyAudioCtx && _candyAudioCtx.state !== 'closed') {
-                _candyAudioCtx.close();
-            }
-        } catch (e) {}
-        _candyAudioCtx = null;
-
-        // 如果是添加到主屏的沙盒模式，下次回来需要重新“开启音效”
-        if (isStandaloneMode()) {
-            soundUnlocked = false;
-            // 根据当前糖果是否需要声音，决定要不要显示按钮
-            updateCandySoundButton(currentCandyNeedsSound);
-        }
-    }
-});
 
 
 function playBubblePopSound() {
