@@ -236,28 +236,19 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 10000;
-    pointer-events: auto;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
+    z-index: 50;
     padding: 8px 10px;
     border-radius: 10px;
     border: 1px solid rgba(0,0,0,0.08);
     background: rgba(255,255,255,0.92);
     color: rgba(0,0,0,0.72);
     font-size: 13px;
-    cursor: pointer;
     display: none; /* 默认隐藏：仅在需要解锁音效时出现 */
     align-items: center;
     gap: 6px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.06);
     backdrop-filter: blur(6px);
 }
-
-.sound-enable-btn:disabled {
-    opacity: 0.55;
-}
-
 
 
 /* 提示文案：复用泡泡 hint 的风格 */
@@ -2205,7 +2196,7 @@ const MUSIC_CLIPS = [
     },
     {
         title: '《我很快乐》- 刘惜君 · 嘴硬之歌',
-        bvid: 'BV1V14y1f7Up'
+        bvid: 'BV1L8411C7Ga'
     },
     {
         title: '《奇妙能力歌》- 陈粒 · 4K Hi-Res 版',
@@ -2235,6 +2226,42 @@ const MUSIC_CLIPS = [
         title: '《City of Stars》- 电影《爱乐之城》主题曲 MV',
         bvid: 'BV1Q4411A7Q6'
     },
+	{
+  title: '日推歌单｜“偏偏你忽略了我的爱”｜《Beanie》',
+  bvid: 'BV1aRpqe3E7v'
+},
+{
+  title: '4K珍藏｜郁可唯《去有风的地方》主题曲',
+  bvid: 'BV1p14y137HP'
+},
+{
+  title: '10CM - 春雪《背着善宰跑》OST｜Cause I\'m falling slowly love with you',
+  bvid: 'BV1nE421G73Q'
+},
+{
+  title: '【4K修复】徐小凤《心恋》90年代演出现场',
+  bvid: 'BV1z94y117A2'
+},
+{
+  title: '《失恋阵线联盟》草蜢 MV 1080P 60FPS（LD采集）',
+  bvid: 'BV1TL4y1E7dA'
+},
+{
+  title: '贾樟柯电影插曲：Go West - Pet Shop Boys',
+  bvid: 'BV1mV411M7ic'
+},
+{
+  title: '【白雪公主OST】Heigh-Ho',
+  bvid: 'BV1kW411G7Au'
+},
+{
+  title: 'JVKE - golden hour（无损音质 4K60 中英字幕）',
+  bvid: 'BV1GV4y1c7nZ'
+},
+{
+  title: '【无损音质】陈绮贞 - 我喜欢上你时的内心活动',
+  bvid: 'BV1PD4y1w72A'
+},
     {
         title: '《Another Day of Sun》- 电影《爱乐之城》开场曲 4K 60FPS',
         bvid: 'BV14knez5E4x'
@@ -2285,12 +2312,12 @@ function getCandyAudioCtx() {
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) return null;
 
-        // 如果之前没有，或者已经被系统关掉（closed），就重建一个
+        // 如果之前没有，或者已经被系统关掉，就重建一个
         if (!_candyAudioCtx || _candyAudioCtx.state === 'closed') {
             _candyAudioCtx = new AC();
         }
 
-        // 如果只是暂时挂起（suspended），恢复它
+        // 如果只是暂时挂起，恢复它
         if (_candyAudioCtx.state === 'suspended') {
             _candyAudioCtx.resume().catch(() => {});
         }
@@ -2369,113 +2396,97 @@ starShineAudio.volume = 0.65;
 
 let soundUnlocked = false;
 
-// 判断是否处于「添加到主屏幕」的独立模式
+// 判断是否处于「添加到主屏幕」的独立模式（仅用于提示，不再参与核心判断）
 function isStandaloneMode() {
-    return (
-        (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
-        window.navigator.standalone === true
-    );
+    try {
+        return (
+            (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+            window.navigator.standalone === true
+        );
+    } catch (e) {
+        return false;
+    }
 }
 
 // 当前糖是否需要音效（用于控制“开启音效”按钮是否出现）
 let currentCandyNeedsSound = false;
 
-// 仅在“需要音效且尚未解锁”的情况下显示按钮（主要兼容 iOS 主屏幕/沙盒策略）
+// 仅在“需要音效且尚未解锁”的情况下显示按钮
 function updateCandySoundButton(needsSound) {
     currentCandyNeedsSound = !!needsSound;
     const btn = document.getElementById('candySoundBtn');
     if (!btn) return;
 
     if (currentCandyNeedsSound && !soundUnlocked) {
-        btn.disabled = false;
-        btn.textContent = '开启音效';
         btn.style.display = 'inline-flex';
     } else {
         btn.style.display = 'none';
     }
 }
 
-// 统一解锁：用一次用户点击手势，把相关音频都“点亮”
+// 统一解锁：用户点一次按钮，把相关音频都“点亮”
 async function unlockAllCandySounds() {
     const btn = document.getElementById('candySoundBtn');
-    if (btn) {
-        btn.disabled = true;
-        btn.textContent = '开启中…';
-    }
 
-    // 1) 先用 WebAudio 立刻“点亮”音频权限（最可靠，不依赖网络文件加载）
-    try {
-        const ctx = getCandyAudioCtx();
-        if (ctx && ctx.state === 'suspended') {
-            await ctx.resume().catch(() => {});
-        }
-        if (ctx) {
-            // 极短的“滴”一下（音量很低），用于建立用户手势 -> 音频通道
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            gain.gain.setValueAtTime(0.0001, ctx.currentTime); // 极低音量，几乎听不到
-            osc.frequency.setValueAtTime(440, ctx.currentTime);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.03);
-        }
-    } catch (e) {}
+    // 尝试唤醒 WebAudio（作为兜底）
+    try { getCandyAudioCtx(); } catch (e) {}
 
-    // 2) 再“预热” HTMLAudio（用 data: 兜底音效，避免加载慢导致卡死）
+    // 逐个尝试，不要因为某个失败就中断
     try {
-        if (bubblePopAudio) {
-            bubblePopAudio.pause();
+        bubblePopAudio.currentTime = 0;
+        await bubblePopAudio.play();
+        bubblePopAudio.pause();
+    } catch (e) {
+        try {
             bubblePopAudio.src = BUBBLE_POP_FALLBACK_DATA;
             bubblePopAudio.load();
-            const p = bubblePopAudio.play();
-            if (p && typeof p.catch === 'function') p.catch(() => {});
-            setTimeout(() => {
-                try { bubblePopAudio.pause(); bubblePopAudio.currentTime = 0; } catch (e) {}
-            }, 80);
-        }
+            bubblePopAudio.currentTime = 0;
+            await bubblePopAudio.play();
+            bubblePopAudio.pause();
+        } catch (_) {}
+    }
+
+    try {
+        fireworkPopAudio.currentTime = 0;
+        await fireworkPopAudio.play();
+        fireworkPopAudio.pause();
     } catch (e) {}
 
-    // 3) 标记已解锁，并立即隐藏按钮（给用户即时反馈）
+    try {
+        starShineAudio.currentTime = 0;
+        await starShineAudio.play();
+        starShineAudio.pause();
+    } catch (e) {}
+
+    // 不管实际是否发声，只要走到这里，就认为用户已经“尝试开启”
     soundUnlocked = true;
     updateCandySoundButton(currentCandyNeedsSound);
-
-    // 4) 兜底：从后台回来时 iOS 可能会再次挂起，允许用户重复点按钮
 }
 
 // 初始化按钮点击（按钮本身常驻在 candyStage，不会被 innerHTML 清掉）
 function initCandySoundButton() {
     const btn = document.getElementById('candySoundBtn');
     if (!btn) return;
-
-    // 直接用 pointerdown（比 click 更稳定，尤其是 iOS 主屏幕模式）
-    const handler = (e) => {
-        try {
-            e.preventDefault();
-            e.stopPropagation();
-        } catch (_) {}
+    btn.addEventListener('click', () => {
         unlockAllCandySounds();
-    };
-
-    btn.addEventListener('pointerdown', handler, { passive: false });
-
-    // 兜底：事件委托（防止某些情况下按钮被重建或事件丢失）
-    if (!window.__candySoundDelegationBound) {
-        window.__candySoundDelegationBound = true;
-        document.addEventListener('pointerdown', (e) => {
-            const t = e.target;
-            if (t && t.id === 'candySoundBtn') {
-                try {
-                    e.preventDefault();
-                    e.stopPropagation();
-                } catch (_) {}
-                unlockAllCandySounds();
-            }
-        }, { capture: true, passive: false });
-    }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', initCandySoundButton);
+
+// 页面可见性变化时，在沙盒模式下要求用户重新解锁音效
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        if (isStandaloneMode()) {
+            soundUnlocked = false;
+        }
+    } else if (document.visibilityState === 'visible') {
+        if (isStandaloneMode()) {
+            updateCandySoundButton(currentCandyNeedsSound);
+        }
+    }
+});
+
 
 function playBubblePopSound() {
     // 主屏幕模式未解锁时，直接不播，避免被系统静音/报错
@@ -3167,7 +3178,7 @@ function renderFireworksCandy(stageEl) {
         } catch (err) {
             console.error('[FireworksCandy] pointerdown error', err);
             if (hint) hint.textContent = '⚠️ 小烟花出了点小故障，刷新一下再试';
-            stop();
+            stopRunning();
         }
 
     });
