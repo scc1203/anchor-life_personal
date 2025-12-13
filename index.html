@@ -2273,13 +2273,22 @@ const BUBBLE_POP_FALLBACK_DATA = 'data:audio/wav;base64,UklGRl4RAABXQVZFZm10IBAA
 let _candyAudioCtx = null;
 function getCandyAudioCtx() {
     try {
-        if (!_candyAudioCtx) {
-            _candyAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+
+        // 如果之前没有，或者已经被系统关掉（closed），就重建一个
+        if (!_candyAudioCtx || _candyAudioCtx.state === 'closed') {
+            _candyAudioCtx = new AudioCtx();
         }
+
+        // 如果只是暂时挂起（suspended），恢复它
         if (_candyAudioCtx.state === 'suspended') {
             _candyAudioCtx.resume().catch(() => {});
         }
-    } catch (e) {}
+    } catch (e) {
+        // 出错时把机房清空，避免卡在坏掉的状态
+        _candyAudioCtx = null;
+    }
     return _candyAudioCtx;
 }
 
@@ -2415,6 +2424,25 @@ function initCandySoundButton() {
 }
 
 document.addEventListener('DOMContentLoaded', initCandySoundButton);
+// 当页面进入后台时，清理音频机房，并在沙盒/主屏模式下要求重新开启音效
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        // iOS 可能在后台把 AudioContext 直接关闭，这里手动关掉并清空引用
+        try {
+            if (_candyAudioCtx && _candyAudioCtx.state !== 'closed') {
+                _candyAudioCtx.close();
+            }
+        } catch (e) {}
+        _candyAudioCtx = null;
+
+        // 如果是添加到主屏的沙盒模式，下次回来需要重新“开启音效”
+        if (isStandaloneMode()) {
+            soundUnlocked = false;
+            // 根据当前糖果是否需要声音，决定要不要显示按钮
+            updateCandySoundButton(currentCandyNeedsSound);
+        }
+    }
+});
 
 
 function playBubblePopSound() {
