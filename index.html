@@ -2273,15 +2273,14 @@ const BUBBLE_POP_FALLBACK_DATA = 'data:audio/wav;base64,UklGRl4RAABXQVZFZm10IBAA
 let _candyAudioCtx = null;
 async function getCandyAudioCtx() {
     try {
-        if (!_candyAudioCtx) {
+        if (!_candyAudioCtx || _candyAudioCtx.state === 'closed') {
             _candyAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-        // 关键修改：等待 resume 完成
         if (_candyAudioCtx.state === 'suspended') {
             await _candyAudioCtx.resume();
         }
     } catch (e) {
-        console.warn('AudioContext resume failed:', e);
+        console.error('AudioContext 错误:', e);
     }
     return _candyAudioCtx;
 }
@@ -2383,24 +2382,53 @@ function updateCandySoundButton(needsSound) {
 // 统一解锁：用一次用户点击手势，把相关音频都“点亮”
 async function unlockAllCandySounds() {
     const btn = document.getElementById('candySoundBtn');
-    // 同步唤醒 WebAudio（作为兜底/补充）
-    try { getCandyAudioCtx(); } catch (e) {}
-
-    // 逐个尝试，不要因为某个失败就中断
-    try { await bubblePopAudio.play(); bubblePopAudio.pause(); bubblePopAudio.currentTime = 0; } catch (e) {
+    
+    try {
+        // 1. 强制重新创建 AudioContext
+        _candyAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        await _candyAudioCtx.resume();
+        
+        // 2. 重新加载所有音频
+        bubblePopAudio.load();
+        fireworkPopAudio.load();
+        starShineAudio.load();
+        
+        // 等待200毫秒让iOS准备好
+        await new Promise(r => setTimeout(r, 200));
+        
+        // 3. 逐个尝试播放并立即暂停
         try {
-            bubblePopAudio.src = BUBBLE_POP_FALLBACK_DATA;
-            bubblePopAudio.load();
+            bubblePopAudio.volume = 0.01;
             await bubblePopAudio.play();
             bubblePopAudio.pause();
             bubblePopAudio.currentTime = 0;
-        } catch (_) {}
+            bubblePopAudio.volume = 1.0;
+        } catch (e) {}
+        
+        try {
+            fireworkPopAudio.volume = 0.01;
+            await fireworkPopAudio.play();
+            fireworkPopAudio.pause();
+            fireworkPopAudio.currentTime = 0;
+            fireworkPopAudio.volume = 1.0;
+        } catch (e) {}
+        
+        try {
+            starShineAudio.volume = 0.01;
+            await starShineAudio.play();
+            starShineAudio.pause();
+            starShineAudio.currentTime = 0;
+            starShineAudio.volume = 0.65;
+        } catch (e) {}
+        
+        soundUnlocked = true;
+        if (btn) btn.style.display = 'none';
+        showToast('✅ 音效已开启');
+        
+    } catch (e) {
+        console.error('解锁音效失败:', e);
+        showToast('❌ 音效开启失败，请重试');
     }
-    try { await fireworkPopAudio.play(); fireworkPopAudio.pause(); fireworkPopAudio.currentTime = 0; } catch (e) {}
-    try { await starShineAudio.play(); starShineAudio.pause(); starShineAudio.currentTime = 0; } catch (e) {}
-
-    soundUnlocked = true;
-    if (btn) btn.style.display = 'none';
 }
 
 // 初始化按钮点击（按钮本身常驻在 candyStage，不会被 innerHTML 清掉）
@@ -2417,20 +2445,26 @@ function initCandySoundButton() {
     // 我们统一由 updateCandySoundButton 按需控制显隐
 }
 
-document.addEventListener('DOMContentLoaded', initCandySoundButton);
-
-
-function playBubblePopSound() {
-    // 主屏幕模式未解锁时，直接不播，避免被系统静音/报错
-    if (isStandaloneMode() && !soundUnlocked) return;
-
-    // 先尝试播放本地文件；失败则回退到内置短音效；再失败则用 WebAudio 兜底
-    safePlayAudio(bubblePopAudio, BUBBLE_POP_FALLBACK_DATA).then((ok) => {
-        if (!ok) {
-            try { playWebPop(260, 0.10); } catch (e) {}
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+        // 页面从后台回来，强制要求重新解锁
+        soundUnlocked = false;
+        
+        // 重置 AudioContext（让它失效，下次重新创建）
+        if (_candyAudioCtx) {
+            try {
+                _candyAudioCtx.close();
+            } catch(e) {}
+            _candyAudioCtx = null;
         }
-    });
-}
+        
+        // 如果当前在玩需要音效的糖，显示按钮
+        if (currentCandyNeedsSound) {
+            const btn = document.getElementById('candySoundBtn');
+            if (btn) btn.style.display = 'inline-flex';
+        }
+    }
+});
 
 function playFireworkPopSound() {
     if (isStandaloneMode() && !soundUnlocked) return;
@@ -3289,14 +3323,13 @@ function renderInstrumentCandy(stageEl) {
         }
     }
 
-    function canPlayNow() {
-        // 主屏幕/沙盒模式未解锁时：提醒用户先点“开启音效”
-        if (isStandaloneMode() && !soundUnlocked) {
-            if (typeof showToast === 'function') showToast('先点右上角「开启音效」再试~');
-            return false;
-        }
-        return true;
+   function canPlayNow() {
+    // 简化检查：只要用户点过"开启音效"就行
+    if (!soundUnlocked) {
+        return false;
     }
+    return true;
+}
 
     function makeVoice(ctx, { freq, type1='sine', type2='triangle', detune2=-7, attack=0.008, peak=0.55, release=1.2, lp=12000 }) {
         const t0 = ctx.currentTime;
